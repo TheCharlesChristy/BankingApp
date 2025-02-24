@@ -1,0 +1,36 @@
+#!/bin/bash
+# Ensure bin directory exists
+mkdir -p bin
+# Compile all Java sources from lib and src into bin
+javac -d bin lib/*.java src/*.java
+# Run the main app using the bin directory as classpath
+java -cp bin BankingApp
+#!/bin/bash
+# Create build directory if not exists
+echo -e "\033[1;33mCreating build directory...\033[0m"
+mkdir -p bin
+
+# Make sure the bin directory is empty
+echo -e "\033[1;33mCleaning bin directory...\033[0m"
+if [ -d bin ]; then
+    for entry in bin/*; do
+        [ -e "$entry" ] || continue
+        echo -e "\033[1;31mRemoving $(realpath "$entry")\033[0m"
+        rm -rf "$entry"
+    done
+fi
+
+# Compile App.java from project root
+echo -e "\033[1;32mCompiling App.java...\033[0m"
+javac -d bin App.java
+
+# Recursively compile all Java files in src
+echo -e "\033[1;32mCompiling source files...\033[0m"
+find ./src -type f -name "*.java" | while read -r file; do
+    echo -e "\033[1;36mCompiling $(basename "$file")...\033[0m"
+    javac -d bin "$file"
+done
+
+# Run the main app
+echo -e "\033[1;33mRunning application...\033[0m"
+java -cp bin App
