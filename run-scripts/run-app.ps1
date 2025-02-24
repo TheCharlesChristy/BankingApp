@@ -29,14 +29,30 @@ Get-ChildItem -Recurse -Filter "*.java" -Path .\lib | ForEach-Object {
     javac -cp $classpath -d .\bin $_.FullName
 }
 
+# Compile all the files within the tests folder
+Write-Host "Compiling test files from tests..." -ForegroundColor Green
+Get-ChildItem -Recurse -Filter "*.java" -Path .\tests | ForEach-Object {
+    Write-Host "Compiling $($_.Name)..." -ForegroundColor Cyan
+    javac -cp $classpath -d .\bin $_.FullName
+}
+
 # Now compile the main App.java from the project root
 Write-Host "Compiling App.java..." -ForegroundColor Green
 javac -cp $classpath -d .\bin App.java
 
+# Compile the Test.java file
+Write-Host "Compiling Test.java..." -ForegroundColor Green
+javac -cp $classpath -d .\bin Test.java
+
+# List all JAR files
 Write-Host "JAR Files:" -ForegroundColor Magenta
 $jarFiles | ForEach-Object {
     Write-Host $_.FullName -ForegroundColor DarkMagenta
 }
+
+# Run the Test class
+Write-Host "Running Test class..." -ForegroundColor Yellow
+java -cp ".\bin;$jarClasspath" Test
 
 # Run the main app (make sure App.java has no package declaration)
 Write-Host "Running application..." -ForegroundColor Yellow

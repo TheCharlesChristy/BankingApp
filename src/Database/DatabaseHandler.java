@@ -1,0 +1,129 @@
+package src.Database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import src.IOHandler;
+
+public class DatabaseHandler {
+    String url;
+    IOHandler io;
+    String[] sqls;
+
+    public DatabaseHandler(String filePath) {
+        this.io = new IOHandler();
+        this.url = "jdbc:sqlite:" + filePath;
+        this.sqls = new String[] {
+            io.read_file("src/Assets/Database/users_table.sql"),
+            io.read_file("src/Assets/Database/accounts_table.sql"),
+            io.read_file("src/Assets/Database/transactions_table.sql"),
+            io.read_file("src/Assets/Database/admins_table.sql")
+        };
+    }
+
+    public void execute_SQL(String sql) {
+        // Execute a SQL statement
+        try (Connection connection = DriverManager.getConnection(url);
+             Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet check_database() {
+        /*
+         *  This method will perform an integrity check on the database.
+         *  This is a simple but effective way of checking database integrity.
+         */
+        String integrity_sql = "PRAGMA integrity_check;";
+
+        try (
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement()
+        ) {
+            statement.execute(integrity_sql);
+            ResultSet output = statement.getResultSet(); // Get the result set
+            // Print the results
+            while (output.next()) {
+                System.out.println(output.getString("integrity_check"));
+            }
+            return output;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void initialise_database() {
+        /*
+         * This method will check the database.
+         * If the database is ok it will finish.
+         * If the database is not ok it will log the error and attempt to restore from backup.
+         * If the backup fails a integrity check then we will simply create a new database.
+         */
+        ResultSet output = check_database();
+        try {
+            if (output.getString("integrity_check").equals("ok")) {
+                return;
+            }
+        } catch (SQLException e) {
+            // If the integrity check fails then we will attempt to restore from backup.
+            io.warning("Database integrity check failed. Attempting to restore from backup.");
+
+            if (restore_from_backup()) {
+                io.info("Database restored from backup.");
+                return;
+            } else {
+                io.error("Failed to restore database from backup. Creating new database.");
+
+                // Create a new database
+                create_database();
+                create_backup();
+            }
+        }
+    }
+
+    public void create_database() {
+        // Create a new database
+        for (String sql : sqls) {
+            execute_SQL(sql);
+        }
+    }
+
+    public void create_backup() {
+        // Create a backup of the database
+        String backup_sql = "VACUUM INTO 'backup.db';";
+
+        try (
+            Connection connection = DriverManager.getConnection(url); // Get connection
+            Statement statement = connection.createStatement() // Create a statement
+        ) {
+            statement.execute(backup_sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean restore_from_backup() {
+        // Restore the database from backup
+        String restore_sql = "ATTACH DATABASE 'backup.db' AS backup;";
+
+        try (
+            Connection connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement()
+        ) {
+            // Attach the backup database
+            // Then create a new database from the backup
+            statement.execute(restore_sql);
+            create_database();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}

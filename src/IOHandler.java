@@ -34,14 +34,14 @@ public class IOHandler {
     }
 
     // Read a full line of input
-    public String readLine() {
+    public String read_line() {
         return scanner.nextLine();
     }
 
     // Read an integer from the user with validation
-    public int readInt() {
+    public int read_int() {
         while (true) {
-            String input = readLine();
+            String input = read_line();
             try {
                 return Integer.parseInt(input.trim());
             } catch (NumberFormatException e) {
@@ -51,9 +51,9 @@ public class IOHandler {
     }
     
     // Read a double from the user with validation
-    public double readDouble() {
+    public double read_double() {
         while (true) {
-            String input = readLine();
+            String input = read_line();
             try {
                 return Double.parseDouble(input.trim());
             } catch (NumberFormatException e) {
@@ -68,12 +68,12 @@ public class IOHandler {
     }
 
     // Set the minimum log level
-    public void setMinLogLevel(LogLevel level) {
+    public void set_min_log_level(LogLevel level) {
         minLevel = level;
     }
     
     // Configure file logging; pass null to disable file logging
-    public void setLogFile(String filePath) {
+    public void set_log_file(String filePath) {
         if(filePath == null) {
             if(fileLogger != null) {
                 fileLogger.close();
@@ -122,14 +122,23 @@ public class IOHandler {
         log(LogLevel.ERROR, message);
     }
 
-    public String readFile(String string) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(string))) {
+    public void write_file(String fname, String content) {
+        try (PrintWriter writer = new PrintWriter(fname)) {
+            writer.print(content);
+            info("File written successfully: " + fname);
+        } catch (IOException e) {
+            error("Failed to write file: " + e.getMessage());
+        }
+    }
+
+    public String read_file(String fname) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fname))) {
             StringBuilder content = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 content.append(line).append(System.lineSeparator());
             }
-            info("File read successfully: " + string);
+            info("File read successfully: " + fname);
             return content.toString();
         } catch (IOException e) {
             error("Failed to read file: " + e.getMessage());
