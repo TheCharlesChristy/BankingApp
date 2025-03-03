@@ -2,13 +2,8 @@ package src.Server;
 
 import src.Database.DatabaseHandler;
 
-import src.Structs.User;
-
-import src.Server.Interfaces.AccountInterface;
-
 public class DataBaseInterface {
     DatabaseHandler db;
-    public AccountInterface account_interface;
 
     public DataBaseInterface() {
         this.db = new DatabaseHandler("banking.db");
@@ -28,6 +23,6 @@ public class DataBaseInterface {
     }
 
     private void create_interfaces() {
-        account_interface = new AccountInterface(this.db);
+        // Create interfaces here
     }
 }
