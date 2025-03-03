@@ -34,7 +34,7 @@ public class DatabaseHandler {
         }
     }
 
-    public ResultSet check_database() {
+    public boolean check_database() {
         /*
          *  This method will perform an integrity check on the database.
          *  This is a simple but effective way of checking database integrity.
@@ -47,14 +47,11 @@ public class DatabaseHandler {
         ) {
             statement.execute(integrity_sql);
             ResultSet output = statement.getResultSet(); // Get the result set
-            // Print the results
-            while (output.next()) {
-                System.out.println(output.getString("integrity_check"));
-            }
-            return output;
+            return output.getString("integrity_check").equals("ok");
+
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return false;
         }
     }
 
@@ -65,13 +62,16 @@ public class DatabaseHandler {
          * If the database is not ok it will log the error and attempt to restore from backup.
          * If the backup fails a integrity check then we will simply create a new database.
          */
-        ResultSet output = check_database();
         try {
-            if (output.getString("integrity_check").equals("ok")) {
+            boolean check = check_database();
+
+            if (check) {
+                io.debug("Database integrity check passed. Database is ok.");
                 return;
             }
-        } catch (SQLException e) {
+        } catch (RuntimeException e) {
             // If the integrity check fails then we will attempt to restore from backup.
+            io.error(e.getMessage());
             io.warning("Database integrity check failed. Attempting to restore from backup.");
 
             if (restore_from_backup()) {
@@ -82,7 +82,9 @@ public class DatabaseHandler {
 
                 // Create a new database
                 create_database();
-                create_backup();
+                io.info("New database created.");
+                create_backup("backup");
+                io.info("Backup created.");
             }
         }
     }
@@ -94,9 +96,9 @@ public class DatabaseHandler {
         }
     }
 
-    public void create_backup() {
+    public void create_backup(String backup_name) {
         // Create a backup of the database
-        String backup_sql = "VACUUM INTO 'backup.db';";
+        String backup_sql = "VACUUM INTO '" + backup_name + ".db';";
 
         try (
             Connection connection = DriverManager.getConnection(url); // Get connection
@@ -125,5 +127,10 @@ public class DatabaseHandler {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void remove_database(String db_fname) {
+        // Remove the database
+        io.delete_file(db_fname);
     }
 }

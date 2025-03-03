@@ -145,5 +145,13 @@ public class IOHandler {
             return "";
         }
     }
+
+    public void delete_file(String fname) {
+        if (new java.io.File(fname).delete()) {
+            info("File deleted successfully: " + fname);
+        } else {
+            error("Failed to delete file: " + fname);
+        }
+    }
 }
 
