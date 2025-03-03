@@ -34,6 +34,29 @@ public class DatabaseHandler {
         }
     }
 
+    public void execute_SQL(String sql, Object... params) {
+        // Execute a SQL statement with parameters
+        try (Connection connection = DriverManager.getConnection(url);
+             Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Object execute_SQL(String sql, String username) {
+        // Execute a SQL statement with a return value
+        try (Connection connection = DriverManager.getConnection(url);
+             Statement statement = connection.createStatement()) {
+            statement.execute(sql);
+            ResultSet output = statement.getResultSet();
+            return output.getObject(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean check_database() {
         /*
          *  This method will perform an integrity check on the database.

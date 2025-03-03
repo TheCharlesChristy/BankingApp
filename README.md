@@ -15,6 +15,7 @@ To run the application it is preffered that you run one of the run-app scripts.
     - **Server**: Directory containing the server related code
     - **Client**: Directory containing the client related code
 - **lib**: Directory containing the libraries used in the program
+- **tests**: Directory containing the tests for the program, this is because I use Test Driven Development
 - **run-scripts**: Directory containing the scripts to run the program
 
 ### Program Structure

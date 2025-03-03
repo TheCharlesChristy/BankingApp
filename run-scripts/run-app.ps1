@@ -1,59 +1,45 @@
-# Create build directory if not exists
-Write-Host "Creating build directory..." -ForegroundColor Yellow
-New-Item -ItemType Directory -Force -Path ".\bin"
 
-# Make sure the bin directory is empty
+# Ensure bin directory exists
+if (-not (Test-Path -Path "bin")) {
+    New-Item -Path "bin" -ItemType Directory -Force | Out-Null
+}
+
+# Function to build classpath with all JAR files
+function Build-RuntimeClasspath {
+    $cp = "bin"
+    
+    # Add all JAR files from lib directory
+    if (Test-Path -Path "lib") {
+        $jarFiles = Get-ChildItem -Path "lib" -Filter "*.jar" -ErrorAction SilentlyContinue
+        foreach ($jar in $jarFiles) {
+            $cp = "$cp;$($jar.FullName)"
+        }
+    }
+    
+    return $cp
+}
+
+# Clean the bin directory
 Write-Host "Cleaning bin directory..." -ForegroundColor Yellow
-Get-ChildItem -Path ".\bin\*" | ForEach-Object {
-    Write-Host "Removing $($_.FullName)" -ForegroundColor Red
-    Remove-Item -Recurse -Force -Path $_.FullName
+& "$PSScriptRoot\clean_dirs\clean_dir.ps1"
+
+# Compile the source code
+Write-Host "Compiling source code..." -ForegroundColor Yellow
+& "$PSScriptRoot\compile\compile.ps1"
+
+# Check if compilation was successful
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Compilation failed" -ForegroundColor Red
+    exit 1
 }
 
-# Dynamically build the classpath from JAR files in the lib folder
-$jarFiles = Get-ChildItem -Recurse -Filter "*.jar" -Path ".\lib"
+# Get the classpath with all JARs
+$ClassPath = Build-RuntimeClasspath
 
-# Build the dynamic classpath from JAR files
-$jarClasspath = $jarFiles.FullName -join ";"
-$classpath = ".\bin;$jarClasspath"
+# Run the tests script
+Write-Host "Running tests..." -ForegroundColor Yellow
+& "$PSScriptRoot\run\run.ps1" -AppName "Test"
 
-# First compile all Java files within src (and lib if needed)
-Write-Host "Compiling source files from src..." -ForegroundColor Green
-Get-ChildItem -Recurse -Filter "*.java" -Path .\src | ForEach-Object {
-    Write-Host "Compiling $($_.Name)..." -ForegroundColor Cyan
-    javac -cp $classpath -d .\bin $_.FullName
-}
-
-Write-Host "Compiling source files from lib..." -ForegroundColor Green
-Get-ChildItem -Recurse -Filter "*.java" -Path .\lib | ForEach-Object {
-    Write-Host "Compiling $($_.Name)..." -ForegroundColor Cyan
-    javac -cp $classpath -d .\bin $_.FullName
-}
-
-# Compile all the files within the tests folder
-Write-Host "Compiling test files from tests..." -ForegroundColor Green
-Get-ChildItem -Recurse -Filter "*.java" -Path .\tests | ForEach-Object {
-    Write-Host "Compiling $($_.Name)..." -ForegroundColor Cyan
-    javac -cp $classpath -d .\bin $_.FullName
-}
-
-# Now compile the main App.java from the project root
-Write-Host "Compiling App.java..." -ForegroundColor Green
-javac -cp $classpath -d .\bin App.java
-
-# Compile the Test.java file
-Write-Host "Compiling Test.java..." -ForegroundColor Green
-javac -cp $classpath -d .\bin Test.java
-
-# List all JAR files
-Write-Host "JAR Files:" -ForegroundColor Magenta
-$jarFiles | ForEach-Object {
-    Write-Host $_.FullName -ForegroundColor DarkMagenta
-}
-
-# Run the Test class
-Write-Host "Running Test class..." -ForegroundColor Yellow
-java -cp ".\bin;$jarClasspath" Test
-
-# Run the main app (make sure App.java has no package declaration)
+# Run the main app
 Write-Host "Running application..." -ForegroundColor Yellow
-java -cp ".\bin;$jarClasspath" App
+& "$PSScriptRoot\run\run.ps1" -AppName "App"
