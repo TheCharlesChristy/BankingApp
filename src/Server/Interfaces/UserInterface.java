@@ -77,7 +77,6 @@ public class UserInterface {
         int pin = ((Number) result.get("pin")).intValue();
         String created_at_str = (String) result.get("created_at");
         
-        // Define a formatter that can parse the database datetime format
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime created_at = LocalDateTime.parse(created_at_str, formatter);
         

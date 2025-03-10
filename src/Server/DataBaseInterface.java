@@ -5,12 +5,14 @@ import src.Database.DatabaseHandler;
 import src.Server.Interfaces.AccountInterface;
 import src.Server.Interfaces.UserInterface;
 import src.Server.Interfaces.AdminsInterface;
+import src.Server.Interfaces.TransactionsInterface;
 
 public class DataBaseInterface {
     DatabaseHandler db;
     public AccountInterface account_interface;
     public UserInterface user_interface;
     public AdminsInterface admins_interface;
+    public TransactionsInterface transactions_interface;
 
     public DataBaseInterface() {
         this.db = new DatabaseHandler("banking.db");
@@ -30,9 +32,9 @@ public class DataBaseInterface {
     }
 
     private void create_interfaces() {
-        // Create interfaces here
         this.account_interface = new AccountInterface(this.db);
         this.user_interface = new UserInterface(this.db);
         this.admins_interface = new AdminsInterface(this.db);
+        this.transactions_interface = new TransactionsInterface(this.db);
     }
 }
