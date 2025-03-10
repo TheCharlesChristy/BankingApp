@@ -85,6 +85,23 @@ public class DatabaseHandler {
         }
     }
 
+    public ResultSet get_raw_execute_SQL(String sql, Object... params) {
+        // Execute a SQL statement with a return value
+        try (Connection connection = DriverManager.getConnection(url);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+            // Set the parameters
+            for (int i = 0; i < params.length; i++) {
+                statement.setObject(i + 1, params[i]);
+            }
+            
+            return statement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean check_database() {
         /*
          *  This method will perform an integrity check on the database.
