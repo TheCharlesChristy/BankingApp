@@ -4,6 +4,7 @@ import src.Database.DatabaseHandler;
 import src.Server.DataBaseInterface;
 
 import src.Structs.Accounts;
+import src.Structs.Users;
 
 public class App {
     public static void main(String[] args) {
