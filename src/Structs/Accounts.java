@@ -25,17 +25,11 @@ public class Accounts {
         this.created_at = created_at;
     }
 
-    public Accounts(int user_id, float balance) {
-        this.user_id = user_id;
-        this.balance = balance;
+    public Accounts(int id, int user_id, float balance, float interest_rate) {
+        this(id, user_id, balance, interest_rate, LocalDateTime.now());
     }
 
-    public Accounts(int user_id, int balance) {
-        this.user_id = user_id;
-        this.balance = (float)balance;
-    }
-
-    public Accounts(int user_id) {
-        this.user_id = user_id;
+    public Accounts(int id, int user_id, int balance, float interest_rate) {
+        this(id, user_id, balance, interest_rate, LocalDateTime.now());
     }
 }

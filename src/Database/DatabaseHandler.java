@@ -2,9 +2,12 @@ package src.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import src.IOHandler;
 
@@ -37,20 +40,45 @@ public class DatabaseHandler {
     public void execute_SQL(String sql, Object... params) {
         // Execute a SQL statement with parameters
         try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement()) {
-            statement.execute(sql);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+            // Set the parameters
+            for (int i = 0; i < params.length; i++) {
+                statement.setObject(i + 1, params[i]);
+            }
+            
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Object execute_SQL(String sql, String username) {
+    public Map<String, Object> get_execute_SQL(String sql, Object... params) {
         // Execute a SQL statement with a return value
         try (Connection connection = DriverManager.getConnection(url);
-             Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-            ResultSet output = statement.getResultSet();
-            return output.getObject(username);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            
+            // Set the parameters
+            for (int i = 0; i < params.length; i++) {
+                statement.setObject(i + 1, params[i]);
+            }
+            
+            ResultSet output = statement.executeQuery();
+            
+            if (output.next()) {
+                // Convert ResultSet to Map to avoid the "ResultSet closed" error
+                Map<String, Object> row = new HashMap<>();
+                int columnCount = output.getMetaData().getColumnCount();
+                
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = output.getMetaData().getColumnName(i);
+                    Object value = output.getObject(i);
+                    row.put(columnName, value);
+                }
+                
+                return row;
+            }
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -88,6 +116,8 @@ public class DatabaseHandler {
         try {
             boolean check = check_database();
 
+            io.info(check ? "Database integrity check passed. Database is ok." : "Database integrity check failed. Attempting to restore from backup.");
+
             if (check) {
                 io.debug("Database integrity check passed. Database is ok.");
                 return;
@@ -114,6 +144,7 @@ public class DatabaseHandler {
 
     public void create_database() {
         // Create a new database
+        io.info("Creating new database.");
         for (String sql : sqls) {
             execute_SQL(sql);
         }
