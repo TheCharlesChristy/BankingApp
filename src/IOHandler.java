@@ -8,6 +8,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class IOHandler {
     final private Scanner scanner;
@@ -152,6 +156,21 @@ public class IOHandler {
         } else {
             error("Failed to delete file: " + fname);
         }
+    }
+
+    public JSONObject read_json(String fname) throws IOException {
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(read_file(fname));
+            return (JSONObject) obj;
+        } catch (ParseException e) {
+            error("Failed to read JSON file: " + e.getMessage());
+            return new JSONObject();
+        }
+    }
+
+    public void write_json(String fname, JSONObject obj) {
+        write_file(fname, obj.toJSONString());
     }
 }
 
