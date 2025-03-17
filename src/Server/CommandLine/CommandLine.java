@@ -3,6 +3,13 @@ package src.Server.CommandLine;
 import src.Server.DataBaseInterface;
 import src.Database.DatabaseHandler;
 import src.IOHandler;
+import org.json.simple.JSONObject;
+
+import java.io.IOException;
+
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class CommandLine {
     private DataBaseInterface db_interface;
@@ -23,11 +30,27 @@ public class CommandLine {
         this.io = new IOHandler();
     }
 
+    private String get_prompt(String key) {
+        JSONObject json = null;
+        try {
+            json = io.read_json("src/Server/CommandLine/prompts.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return (String) json.get(key);
+    }
+
     public void prompt_welcome() {
-        io.println("Welcome to the banking system");
+        String msg = get_prompt("Welcome");
+        io.println(msg);
     }
 
     public void prompt_main() {
         
+    }
+
+    public static void main(String[] args) {
+        CommandLine cmd = new CommandLine("banking.db");
+        cmd.prompt_welcome();
     }
 }
