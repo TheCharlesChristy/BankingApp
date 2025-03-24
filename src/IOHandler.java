@@ -14,7 +14,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class IOHandler {
-    final private Scanner scanner;
+    private Scanner scanner;
     
     // Define log levels
     public enum LogLevel { DEBUG, INFO, WARNING, ERROR }
@@ -24,6 +24,11 @@ public class IOHandler {
     private PrintWriter fileLogger = null;
     
     public IOHandler() {
+        scanner = new Scanner(System.in);
+    }
+
+    private void reset_scanner() {
+        scanner.reset();
         scanner = new Scanner(System.in);
     }
 
@@ -39,52 +44,94 @@ public class IOHandler {
 
     // Read a full line of input
     public String read_line() {
-        return scanner.nextLine();
+        Console console = System.console();
+        if (console != null) {
+            // This properly handles the console mode for password input
+            String inp = console.readLine();
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            console.flush();
+            return inp;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            reset_scanner();
+            return scanner.nextLine();
+        }
+    }
+
+    public String read_line(String prompt) {
+        Console console = System.console();
+        if (console != null) {
+            // This properly handles the console mode for password input
+            String inp = console.readLine(prompt);
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            console.flush();
+            return inp;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            reset_scanner();
+            print(prompt);
+            return scanner.nextLine();
+        }
     }
 
     public String read_pass(String prompt) {
         Console console = System.console();
-        if (console == null) {
-            println("Couldn't get Console instance");
-            System.exit(0);
+        if (console != null) {
+            // This properly handles the console mode for password input
+            char[] passwordChars = console.readPassword(prompt);
+            String password = new String(passwordChars);
+            // Clear the password array for security
+            java.util.Arrays.fill(passwordChars, ' ');
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            return password;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            System.out.print(prompt);
+            reset_scanner();
+            return scanner.nextLine();
         }
-        String fmt = "%2$5s %3$10s%n"; 
-  
-        // Read line 
-        char[] pwd = console.readPassword(fmt, prompt); 
-        return new String(pwd);
     }
 
     public String read_pass() {
         Console console = System.console();
-        if (console == null) {
-            println("Couldn't get Console instance");
-            System.exit(0);
+        if (console != null) {
+            // This properly handles the console mode for password input
+            char[] passwordChars = console.readPassword();
+            String password = new String(passwordChars);
+            // Clear the password array for security
+            java.util.Arrays.fill(passwordChars, ' ');
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            console.flush();
+            return password;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            reset_scanner();
+            return scanner.nextLine();
         }
-        
-        // Read password without echoing characters
-        char[] pwd = console.readPassword();
-        return new String(pwd);
     }
 
     public String prompt(String message) {
-        print(message);
-        return read_line();
+        return read_line(message);
     }
 
     public int prompt_int(String message) {
-        print(message);
-        return read_int();
+        return read_int(message);
     }
 
     public int prompt_int_no_loop(String message) {
-        print(message);
-        return read_int_no_loop();
+        return read_int_no_loop(message);
     }
 
     public String prompt_password(String message) {
-        print(message);
-        String pswd = read_pass();
+        String pswd = read_pass(message);
         return hash_password(pswd);
     }
 
@@ -93,6 +140,17 @@ public class IOHandler {
     }
 
     // Read an integer from the user with validation
+    public int read_int(String prompt) {
+        while (true) {
+            String input = read_line(prompt);
+            try {
+                return Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                println("Invalid input. Please enter a valid integer:");
+            }
+        }
+    }
+
     public int read_int() {
         while (true) {
             String input = read_line();
@@ -104,6 +162,15 @@ public class IOHandler {
         }
     }
 
+
+    public int read_int_no_loop(String prompt) {
+        String input = read_line(prompt);
+        try {
+            return Integer.parseInt(input.trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
 
     public int read_int_no_loop() {
         String input = read_line();
@@ -118,6 +185,17 @@ public class IOHandler {
     public double read_double() {
         while (true) {
             String input = read_line();
+            try {
+                return Double.parseDouble(input.trim());
+            } catch (NumberFormatException e) {
+                println("Invalid input. Please enter a valid number:");
+            }
+        }
+    }
+
+    public double read_double(String prompt) {
+        while (true) {
+            String input = read_line(prompt);
             try {
                 return Double.parseDouble(input.trim());
             } catch (NumberFormatException e) {
