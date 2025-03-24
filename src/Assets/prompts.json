@@ -6,6 +6,7 @@
     "LoginTryAgain": "Invalid username or password. Would you like to try again? (y/n): ",
     "Register": "Register ------------------------------",
     "RegisterUsername": "Enter your username: ",
+    "RegisterPasswordReq": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
     "RegisterPassword": "Enter your password: ",
     "RegisterPasswordConfirm": "Confirm your password: ",
     "RegisterEmail": "Enter your email: ",
