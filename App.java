@@ -3,15 +3,14 @@ import src.Database.DatabaseHandler;
 
 import src.Server.DataBaseInterface;
 
-import src.Structs.Accounts;
-
-import src.Server.CommandLine.CommandLine;
+import src.Server.CommandLine.CommandLineInterface;
+import src.Structs.Users;
 
 public class App {
     public IOHandler io;
     public DatabaseHandler db;
     public DataBaseInterface db_interface;
-    public CommandLine cmd;
+    public CommandLineInterface cmd;
 
     private void create_io() {
         io = new IOHandler();
@@ -20,7 +19,7 @@ public class App {
     }
 
     private void create_cmd() {
-        cmd = new CommandLine(db_interface);
+        cmd = new CommandLineInterface(db_interface);
     }
 
     private void create_db() {
@@ -41,6 +40,5 @@ public class App {
         app.init();
 
         app.cmd.run();
-
     }
 }

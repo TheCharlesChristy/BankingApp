@@ -3,10 +3,17 @@
     "Login": "Login ------------------------------",
     "LoginUsername": "Enter your username: ",
     "LoginPassword": "Enter your password: ",
+    "LoginTryAgain": "Invalid username or password. Would you like to try again? (y/n): ",
     "Register": "Register ------------------------------",
     "RegisterUsername": "Enter your username: ",
     "RegisterPassword": "Enter your password: ",
     "RegisterPasswordConfirm": "Confirm your password: ",
     "RegisterEmail": "Enter your email: ",
-    "MainMenu": "----------Banking App----------\n1. Login\n2. Register\n3. Exit"
+    "MainMenu": "Banking App ------------------------------\n1. Login\n2. Register\n3. Exit",
+    "MainMenuChoice": "Enter your choice: ",
+    "AccountManager": "Account Manager ------------------------------\n1. View Balance\n2. Deposit\n3. Withdraw\n4. Transfer\n5. Logout",
+    "AccountManagerChoice": "Enter your choice: ",
+    "ViewBalance": "Balance-----------------------",
+    "ViewBalanceOptions": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit",
+    "ViewBalanceChoice": "Enter your choice: "
 }

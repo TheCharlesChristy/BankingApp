@@ -7,6 +7,9 @@ import src.Server.Interfaces.UserInterface;
 import src.Server.Interfaces.AdminsInterface;
 import src.Server.Interfaces.TransactionsInterface;
 
+import src.Structs.Users;
+import src.Structs.Accounts;
+
 public class DataBaseInterface {
     DatabaseHandler db;
     public AccountInterface account_interface;
@@ -44,5 +47,11 @@ public class DataBaseInterface {
 
     public boolean register(String username, String password, String email, int pin) {
         return user_interface.register(username, password, email, pin);
+    }
+
+    public void create_user(Users usr) {
+        Accounts acc = new Accounts(usr.get_id());
+        user_interface.create_user(usr);
+        account_interface.create_account(acc);
     }
 }

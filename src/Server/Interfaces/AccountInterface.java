@@ -59,4 +59,20 @@ public class AccountInterface {
         String sql = "DELETE FROM Accounts WHERE id = ?";
         db.execute_SQL(sql, account_id);
     }
+
+    public float get_balance(int user_id) {
+        String sql = "SELECT * FROM Accounts WHERE user_id = ?";
+        Map<String, Object> result = db.get_execute_SQL(sql, user_id);
+        if (result == null) {
+            System.out.println("Account does not exist");
+            return 0.0f;
+        }
+        try {
+            Accounts account = parse_account(result);
+            return account.balance;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0f;
+        }
+    }
 }
