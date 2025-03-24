@@ -33,6 +33,7 @@ public class Users {
         this.password = password;
         this.email = email;
         this.pin = pin;
+        this.created_at = LocalDateTime.now(); // Setting current time as created_at
     }
 
     public Users(String username, String password, String email) {

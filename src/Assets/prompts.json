@@ -1,0 +1,12 @@
+{
+    "Welcome": "Welcome to the Banking System!",
+    "Login": "Login ------------------------------",
+    "LoginUsername": "Enter your username: ",
+    "LoginPassword": "Enter your password: ",
+    "Register": "Register ------------------------------",
+    "RegisterUsername": "Enter your username: ",
+    "RegisterPassword": "Enter your password: ",
+    "RegisterPasswordConfirm": "Confirm your password: ",
+    "RegisterEmail": "Enter your email: ",
+    "MainMenu": "----------Banking App----------\n1. Login\n2. Register\n3. Exit"
+}

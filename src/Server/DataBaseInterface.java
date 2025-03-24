@@ -37,4 +37,12 @@ public class DataBaseInterface {
         this.admins_interface = new AdminsInterface(this.db);
         this.transactions_interface = new TransactionsInterface(this.db);
     }
+
+    public boolean login(String username, String password) {
+        return user_interface.login(username, password);
+    }
+
+    public boolean register(String username, String password, String email, int pin) {
+        return user_interface.register(username, password, email, pin);
+    }
 }

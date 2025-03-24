@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.FileReader;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -42,6 +42,56 @@ public class IOHandler {
         return scanner.nextLine();
     }
 
+    public String read_pass(String prompt) {
+        Console console = System.console();
+        if (console == null) {
+            println("Couldn't get Console instance");
+            System.exit(0);
+        }
+        String fmt = "%2$5s %3$10s%n"; 
+  
+        // Read line 
+        char[] pwd = console.readPassword(fmt, prompt); 
+        return new String(pwd);
+    }
+
+    public String read_pass() {
+        Console console = System.console();
+        if (console == null) {
+            println("Couldn't get Console instance");
+            System.exit(0);
+        }
+        
+        // Read password without echoing characters
+        char[] pwd = console.readPassword();
+        return new String(pwd);
+    }
+
+    public String prompt(String message) {
+        print(message);
+        return read_line();
+    }
+
+    public int prompt_int(String message) {
+        print(message);
+        return read_int();
+    }
+
+    public int prompt_int_no_loop(String message) {
+        print(message);
+        return read_int_no_loop();
+    }
+
+    public String prompt_password(String message) {
+        print(message);
+        String pswd = read_pass();
+        return hash_password(pswd);
+    }
+
+    public String hash_password(String password) {
+        return Integer.toString(password.hashCode());
+    }
+
     // Read an integer from the user with validation
     public int read_int() {
         while (true) {
@@ -51,6 +101,16 @@ public class IOHandler {
             } catch (NumberFormatException e) {
                 println("Invalid input. Please enter a valid integer:");
             }
+        }
+    }
+
+
+    public int read_int_no_loop() {
+        String input = read_line();
+        try {
+            return Integer.parseInt(input.trim());
+        } catch (NumberFormatException e) {
+            return -1;
         }
     }
     
@@ -171,6 +231,10 @@ public class IOHandler {
 
     public void write_json(String fname, JSONObject obj) {
         write_file(fname, obj.toJSONString());
+    }
+
+    public int get_random_int(int min, int max) {
+        return (int) (Math.random() * (max - min + 1) + min);
     }
 }
 
