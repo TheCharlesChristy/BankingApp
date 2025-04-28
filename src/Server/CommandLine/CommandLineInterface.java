@@ -38,15 +38,11 @@ public class CommandLineInterface {
         while (true) {
             int choice = account_manager.run();
             if (choice == 1) {
-                // view account
-                break;
-            } else if (choice == 2) {
-                // modify account
-                break;
-            } else if (choice == 3) {
-                // Delete account
+                // Search for user
                 break;
             } else {
+                // Logout
+                io.debug("Logging out of admin account...");
                 break;
             }
         }
