@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 public class Accounts {
     public int id;
     public int user_id;
-    public float balance;
-    public float interest_rate;
+    public float balance = 0.0f;
+    public float interest_rate = 0.04f;
     public LocalDateTime created_at;
 
     public Accounts(int id, int user_id, float balance, float interest_rate, LocalDateTime created_at) {
@@ -23,6 +23,11 @@ public class Accounts {
         this.balance = (float)balance;
         this.interest_rate = interest_rate;
         this.created_at = created_at;
+    }
+
+    public Accounts(int user_id) {
+        this.user_id = user_id;
+        this.created_at = LocalDateTime.now();
     }
 
     public Accounts(int id, int user_id, float balance, float interest_rate) {

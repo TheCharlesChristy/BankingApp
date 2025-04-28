@@ -3,23 +3,42 @@ import src.Database.DatabaseHandler;
 
 import src.Server.DataBaseInterface;
 
-import src.Structs.Accounts;
+import src.Server.CommandLine.CommandLineInterface;
+import src.Structs.Users;
 
 public class App {
-    public static void main(String[] args) {
-        IOHandler io = new IOHandler();
-        DatabaseHandler db = new DatabaseHandler("banking.db");
+    public IOHandler io;
+    public DatabaseHandler db;
+    public DataBaseInterface db_interface;
+    public CommandLineInterface cmd;
 
-        db.create_database();
-        db.initialise_database();
-
+    private void create_io() {
+        io = new IOHandler();
         io.set_log_file("app_log.txt");
         io.set_min_log_level(IOHandler.LogLevel.INFO);
+    }
 
-        DataBaseInterface db_interface = new DataBaseInterface(db);
+    private void create_cmd() {
+        cmd = new CommandLineInterface(db_interface);
+    }
 
-        Accounts account = new Accounts(1, 1, 10.0f, 0.1f);
-        db_interface.account_interface.create_account(account);
-        Accounts test_acc = db_interface.account_interface.get_account(1);
+    private void create_db() {
+        db = new DatabaseHandler("banking.db");
+        db.create_database();
+        db.initialise_database();
+        db_interface = new DataBaseInterface(db);
+    }
+
+    public void init() {
+        create_io();
+        create_db();
+        create_cmd();
+    }
+
+    public static void main(String[] args) {
+        App app = new App();
+        app.init();
+
+        app.cmd.run();
     }
 }

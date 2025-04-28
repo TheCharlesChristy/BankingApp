@@ -7,10 +7,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.FileReader;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class IOHandler {
-    final private Scanner scanner;
+    private Scanner scanner;
     
     // Define log levels
     public enum LogLevel { DEBUG, INFO, WARNING, ERROR }
@@ -20,6 +24,11 @@ public class IOHandler {
     private PrintWriter fileLogger = null;
     
     public IOHandler() {
+        scanner = new Scanner(System.in);
+    }
+
+    private void reset_scanner() {
+        scanner.reset();
         scanner = new Scanner(System.in);
     }
 
@@ -35,10 +44,113 @@ public class IOHandler {
 
     // Read a full line of input
     public String read_line() {
-        return scanner.nextLine();
+        Console console = System.console();
+        if (console != null) {
+            // This properly handles the console mode for password input
+            String inp = console.readLine();
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            console.flush();
+            return inp;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            reset_scanner();
+            return scanner.nextLine();
+        }
+    }
+
+    public String read_line(String prompt) {
+        Console console = System.console();
+        if (console != null) {
+            // This properly handles the console mode for password input
+            String inp = console.readLine(prompt);
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            console.flush();
+            return inp;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            reset_scanner();
+            print(prompt);
+            return scanner.nextLine();
+        }
+    }
+
+    public String read_pass(String prompt) {
+        Console console = System.console();
+        if (console != null) {
+            // This properly handles the console mode for password input
+            char[] passwordChars = console.readPassword(prompt);
+            String password = new String(passwordChars);
+            // Clear the password array for security
+            java.util.Arrays.fill(passwordChars, ' ');
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            return password;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            System.out.print(prompt);
+            reset_scanner();
+            return scanner.nextLine();
+        }
+    }
+
+    public String read_pass() {
+        Console console = System.console();
+        if (console != null) {
+            // This properly handles the console mode for password input
+            char[] passwordChars = console.readPassword();
+            String password = new String(passwordChars);
+            // Clear the password array for security
+            java.util.Arrays.fill(passwordChars, ' ');
+            // Make sure to print a newline after password input
+            System.out.println();
+            reset_scanner();
+            console.flush();
+            return password;
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            reset_scanner();
+            return scanner.nextLine();
+        }
+    }
+
+    public String prompt(String message) {
+        return read_line(message);
+    }
+
+    public int prompt_int(String message) {
+        return read_int(message);
+    }
+
+    public int prompt_int_no_loop(String message) {
+        return read_int_no_loop(message);
+    }
+
+    public String prompt_password(String message) {
+        String pswd = read_pass(message);
+        return hash_password(pswd);
+    }
+
+    public String hash_password(String password) {
+        return Integer.toString(password.hashCode());
     }
 
     // Read an integer from the user with validation
+    public int read_int(String prompt) {
+        while (true) {
+            String input = read_line(prompt);
+            try {
+                return Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                println("Invalid input. Please enter a valid integer:");
+            }
+        }
+    }
+
     public int read_int() {
         while (true) {
             String input = read_line();
@@ -49,11 +161,41 @@ public class IOHandler {
             }
         }
     }
+
+
+    public int read_int_no_loop(String prompt) {
+        String input = read_line(prompt);
+        try {
+            return Integer.parseInt(input.trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    public int read_int_no_loop() {
+        String input = read_line();
+        try {
+            return Integer.parseInt(input.trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
     
     // Read a double from the user with validation
     public double read_double() {
         while (true) {
             String input = read_line();
+            try {
+                return Double.parseDouble(input.trim());
+            } catch (NumberFormatException e) {
+                println("Invalid input. Please enter a valid number:");
+            }
+        }
+    }
+
+    public double read_double(String prompt) {
+        while (true) {
+            String input = read_line(prompt);
             try {
                 return Double.parseDouble(input.trim());
             } catch (NumberFormatException e) {
@@ -152,6 +294,25 @@ public class IOHandler {
         } else {
             error("Failed to delete file: " + fname);
         }
+    }
+
+    public JSONObject read_json(String fname) throws IOException {
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(read_file(fname));
+            return (JSONObject) obj;
+        } catch (ParseException e) {
+            error("Failed to read JSON file: " + e.getMessage());
+            return new JSONObject();
+        }
+    }
+
+    public void write_json(String fname, JSONObject obj) {
+        write_file(fname, obj.toJSONString());
+    }
+
+    public int get_random_int(int min, int max) {
+        return (int) (Math.random() * (max - min + 1) + min);
     }
 }
 

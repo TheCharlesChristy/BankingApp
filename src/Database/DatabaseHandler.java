@@ -23,7 +23,8 @@ public class DatabaseHandler {
             io.read_file("src/Assets/Database/users_table.sql"),
             io.read_file("src/Assets/Database/accounts_table.sql"),
             io.read_file("src/Assets/Database/transactions_table.sql"),
-            io.read_file("src/Assets/Database/admins_table.sql")
+            io.read_file("src/Assets/Database/admins_table.sql"),
+            io.read_file("src/Assets/Database/defaults.sql")
         };
     }
 

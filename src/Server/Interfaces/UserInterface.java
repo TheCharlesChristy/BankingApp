@@ -97,4 +97,34 @@ public class UserInterface {
         String sql = "DELETE FROM Users WHERE username = ?";
         db.execute_SQL(sql, username);
     }
+
+    public boolean login(String username, String password) {
+        String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
+        Map<String, Object> result = db.get_execute_SQL(sql, username, password);
+        return result != null;
+    }
+
+    public boolean check_password(String username, String password) {
+        String sql = "SELECT * FROM Users WHERE username = ? AND password = ?";
+        Map<String, Object> result = db.get_execute_SQL(sql, username, password);
+        return result != null;
+    }
+
+    public boolean register(String username, String password, String email, int pin) {
+        if (check_exists(username)) {
+            return false;
+        }
+        Users user = new Users(username, password, email, pin);
+        create_user(user);
+        return true;
+    }
+
+    public int get_userid(String username) {
+        String sql = "SELECT * FROM Users WHERE username = ?";
+        Map<String, Object> result = db.get_execute_SQL(sql, username);
+        if (result == null) {
+            return -1;
+        }
+        return (int) result.get("id");
+    }
 }
