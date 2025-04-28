@@ -15,7 +15,7 @@ public class AdminAccountManager extends CommandLineFunctions {
     }
 
     private boolean verify_input(String input) {
-        if (input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")){
+        if (input.equals("1") || input.equals("2")){
             return true;
         }
         return false;

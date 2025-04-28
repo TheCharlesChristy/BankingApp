@@ -50,8 +50,10 @@ public class DataBaseInterface {
     }
 
     public void create_user(Users usr) {
-        Accounts acc = new Accounts(usr.get_id());
         user_interface.create_user(usr);
+        // Now that the user is assigned an id by the database, we can create an account for them
+        usr = user_interface.get_user(usr.username);
+        Accounts acc = new Accounts(usr.get_id());
         account_interface.create_account(acc);
     }
 }

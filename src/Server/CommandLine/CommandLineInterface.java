@@ -36,7 +36,7 @@ public class CommandLineInterface {
 
     private void admin_account_main_loop(Users usr) {
         while (true) {
-            int choice = account_manager.run();
+            int choice = admin_account_manager.run();
             if (choice == 1) {
                 // Search for user
                 break;

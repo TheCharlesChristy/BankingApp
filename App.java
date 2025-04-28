@@ -15,7 +15,7 @@ public class App {
     private void create_io() {
         io = new IOHandler();
         io.set_log_file("app_log.txt");
-        io.set_min_log_level(IOHandler.LogLevel.INFO);
+        io.set_min_log_level(IOHandler.LogLevel.ERROR);
     }
 
     private void create_cmd() {
