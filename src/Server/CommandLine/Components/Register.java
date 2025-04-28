@@ -22,7 +22,7 @@ public class Register extends CommandLineFunctions {
             io.println("Password must be at least 8 characters long");
             return false;
         }
-        if (!password.matches(".*[A-Z].*")) {
+        if (!password.matches(".*\\p{Lu}.*")) {
             io.println("Password must contain at least one capital letter");
             return false;
         }

@@ -14,6 +14,8 @@
     "MainMenuChoice": "Enter your choice: ",
     "AccountManager": "Account Manager ------------------------------\n1. View Balance\n2. Deposit\n3. Withdraw\n4. Transfer\n5. Logout",
     "AccountManagerChoice": "Enter your choice: ",
+    "AdminAccountManager": "Admin Account Manager ------------------------------\n1. View Account\n2. Modify Account\n3. Delete Account\n4. Logout",
+    "AdminAccountManagerChoice": "Enter your choice: ",
     "ViewBalance": "Balance-----------------------",
     "ViewBalanceOptions": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit",
     "ViewBalanceChoice": "Enter your choice: "

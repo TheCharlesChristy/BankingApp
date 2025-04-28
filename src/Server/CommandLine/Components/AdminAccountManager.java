@@ -15,17 +15,17 @@ public class AdminAccountManager extends CommandLineFunctions {
     }
 
     private boolean verify_input(String input) {
-        if (input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4") || input.equals("5")) {
+        if (input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")){
             return true;
         }
         return false;
     }
 
     public int prompt_account_manager() {
-        get_prompt_print("AccountManager");
+        get_prompt_print("AdminAccountManager");
         int incorrect_attempts = 0;
         while (incorrect_attempts < 3) {
-            String choice = get_prompt_enter("AccountManagerChoice");
+            String choice = get_prompt_enter("AdminAccountManagerChoice");
             if (!verify_input(choice)) {
                 io.println("Invalid input");
                 incorrect_attempts++;
@@ -34,6 +34,6 @@ public class AdminAccountManager extends CommandLineFunctions {
                 return Integer.parseInt(choice);
             }
         }
-        return 5; // logout
+        return 4; // logout
     }
 }

@@ -52,7 +52,7 @@ public class CommandLineFunctions {
 
     protected String get_prompt_enter_pass(String key) {
         String msg = get_prompt(key);
-        return io.prompt_password(msg);
+        return io.prompt(msg);
     }
 
     protected int generate_pin() {
