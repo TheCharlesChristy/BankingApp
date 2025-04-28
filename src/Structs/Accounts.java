@@ -37,4 +37,18 @@ public class Accounts {
     public Accounts(int id, int user_id, int balance, float interest_rate) {
         this(id, user_id, balance, interest_rate, LocalDateTime.now());
     }
+
+    public void deposit(float amount) {
+        this.balance += amount;
+    }
+
+    public float withdraw(float amount) {
+        if (this.balance >= amount) {
+            amount = this.balance;
+            this.balance -= amount;
+        } else {
+            System.out.println("Insufficient funds");
+        }
+        return amount;
+    }
 }

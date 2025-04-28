@@ -29,6 +29,10 @@ public class ViewBalance extends CommandLineFunctions{
         prompt_view_balance(user);
     }
 
+    public void clear() {
+        user = null;
+    }
+
     public float convert_currency(float amount, Currency currency) {
         switch (currency) {
             case Currency.USD:

@@ -6,6 +6,7 @@ import src.Server.CommandLine.Components.Login;
 import src.Server.CommandLine.Components.Register; 
 import src.Server.CommandLine.Components.AccountManager; 
 import src.Server.CommandLine.Components.AdminAccountManager; 
+import src.Server.CommandLine.Components.Deposit; 
 import src.Server.CommandLine.Components.MainMenu; 
 import src.Server.CommandLine.Components.ViewBalance; 
 import src.IOHandler;
@@ -21,6 +22,7 @@ public class CommandLineInterface {
     public AccountManager account_manager;
     public AdminAccountManager admin_account_manager;
     public ViewBalance view_balance;
+    public Deposit deposit;
     private IOHandler io = new IOHandler();
 
     public CommandLineInterface(DataBaseInterface db_interface) {
@@ -31,6 +33,7 @@ public class CommandLineInterface {
         this.admin_account_manager = new AdminAccountManager(db_interface);
         this.main_menu = new MainMenu(db_interface);
         this.view_balance = new ViewBalance(db_interface);
+        this.deposit = new Deposit(db_interface);
         this.io = new IOHandler();
     }
 
@@ -55,8 +58,15 @@ public class CommandLineInterface {
                 // view account
                 view_balance.set_user(usr);
                 view_balance.run(usr);
+                view_balance.clear();
+                break;
             } else if (choice == 2) {
                 // deposit
+                deposit.set_user(usr);
+                Accounts account = db_interface.account_interface.get_account_by_uid(usr.get_id());
+                deposit.set_account(account);
+                deposit.run();
+                deposit.clear();
                 break;
             } else if (choice == 3) {
                 // withdraw
