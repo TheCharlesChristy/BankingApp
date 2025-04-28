@@ -73,7 +73,7 @@ public class ViewBalance extends CommandLineFunctions{
 
     public void prompt_view_balance(Users user) {
         int uid = db_interface.user_interface.get_userid(user.username);
-        Accounts account = db_interface.account_interface.get_account(uid);
+        Accounts account = db_interface.account_interface.get_account_by_uid(uid);
         Currency currency = Currency.USD;
         String choice = "";
         while (true) {

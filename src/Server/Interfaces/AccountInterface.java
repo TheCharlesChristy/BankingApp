@@ -42,6 +42,25 @@ public class AccountInterface {
         }
     }
 
+    public Accounts get_account_by_uid(int user_id) {
+        String sql = "SELECT * FROM Accounts WHERE user_id = ?";
+        Map<String, Object> result = db.get_execute_SQL(sql, user_id);
+        
+        // if the object is null, the account does not exist
+        if (result == null) {
+            System.out.println("Account does not exist");
+            return null;
+        }
+        
+        // if the object is not null, the account exists
+        try {
+            return parse_account(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private Accounts parse_account(Map<String, Object> result) {
         int id = ((Number) result.get("id")).intValue();
         int user_id = ((Number) result.get("user_id")).intValue();
