@@ -130,6 +130,43 @@ public class CommandLineFunctions {
         return Currency.USD;
     }
 
+    public float get_balance(Accounts account, Currency currency) {
+        // Convert the balance to the specified currency
+        return convert_to_currency(account.get_balance(), currency);
+    }
+
+    public void deposit(Accounts account, float amount_usd) {
+        // Check if the deposit is valid
+        if (amount_usd <= 0) {
+            io.println("Invalid deposit amount.");
+            return;
+        }
+
+        // Perform the deposit
+        account.deposit(amount_usd);
+
+        // Update the account in the database
+        db_interface.account_interface.update_account(account);
+
+        io.println("Deposit successful. New balance: " + account.get_balance());
+    }
+
+    public void withdraw(Accounts account, float amount_usd) {
+        // Check if the withdrawal is valid
+        if (amount_usd <= 0 || amount_usd > account.get_balance()) {
+            io.println("Invalid withdrawal amount.");
+            return;
+        }
+
+        // Perform the withdrawal
+        account.withdraw(amount_usd);
+
+        // Update the account in the database
+        db_interface.account_interface.update_account(account);
+
+        io.println("Withdrawal successful. New balance: " + account.get_balance());
+    }
+
     public void transfer(Accounts from_account, Accounts to_account, float amount) {
         // Check if the transfer is valid
         if (from_account.get_balance() < amount) {
