@@ -59,7 +59,6 @@ public class CommandLineInterface {
                 view_balance.set_user(usr);
                 view_balance.run(usr);
                 view_balance.clear();
-                break;
             } else if (choice == 2) {
                 // deposit
                 deposit.set_user(usr);
@@ -67,14 +66,15 @@ public class CommandLineInterface {
                 deposit.set_account(account);
                 deposit.run();
                 deposit.clear();
-                break;
             } else if (choice == 3) {
                 // withdraw
-                break;
+                io.debug("Withdraw not implemented yet.");
             } else if (choice == 4) {
                 // transfer
-                break;
+                io.debug("Transfer not implemented yet.");
             } else {
+                // Logout
+                io.debug("Logging out of account...");
                 break;
             }
         }

@@ -38,6 +38,11 @@ public class Accounts {
         this(id, user_id, balance, interest_rate, LocalDateTime.now());
     }
 
+    public float get_balance() {
+        // Truncate the balance to 2 decimal places
+        return (int)(this.balance * 100) / 100.0f;
+    }
+
     public void deposit(float amount) {
         this.balance += amount;
     }
