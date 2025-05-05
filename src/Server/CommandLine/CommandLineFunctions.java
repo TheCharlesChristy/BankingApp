@@ -184,4 +184,15 @@ public class CommandLineFunctions {
 
         io.println("Transfer successful. New balance: " + from_account.get_balance());
     }
+
+    public Accounts get_account_by_username(String username) {
+        Users user = db_interface.user_interface.get_user(username);
+        if (user == null) {
+            io.println("User not found.");
+            return null;
+        }
+
+        Accounts account = db_interface.account_interface.get_account_by_uid(user.get_id());
+        return account;
+    }
 }

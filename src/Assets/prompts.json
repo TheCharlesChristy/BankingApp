@@ -31,5 +31,9 @@
     "TransferToAccount": "Enter the account number to transfer to: ",
     "TransferCurrency": "Enter the currency type to transfer: ",
     "TransferCurrencyChoice": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit\n",
-    "TransferAmount": "Enter the amount to transfer: "
+    "TransferAmount": "Enter the amount to transfer: ",
+    "AdminSearchForUser": "Search for User ------------------------------",
+    "AdminSearchForUserUsername": "Enter the username to search for: ",
+    "AdminSearchForUserNotFound": "User not found. Would you like to search again? (y/n): ",
+    "AdminSearchForUserMaxAttempts": "Maximum attempts reached. Exiting search."
 }
