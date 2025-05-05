@@ -37,22 +37,31 @@ public class Deposit extends CommandLineFunctions{
     }
 
     public float convert_currency(float amount, Currency currency) {
+        float converted_amount;
         switch (currency) {
             case Currency.USD:
-                return amount;
+                converted_amount = amount;
+                break;
 
             case Currency.EUR:
-                return amount / 0.85f;
+                converted_amount =  amount / 0.85f;
+                break;
 
             case Currency.JPY:
-                return amount / 110.0f;
+                converted_amount =  amount / 110.0f;
+                break;
 
             case Currency.GBP:
-                return amount / 0.72f;
+                converted_amount = amount / 0.72f;
+                break;
 
             default:
-                return amount;
+                converted_amount =  amount;
+                break;
         }
+
+        // Truncate the converted amount to 2 decimal places
+        return (int)(converted_amount * 100) / 100.0f;
     }
 
     private Currency get_currency(int curr_type) {
@@ -98,11 +107,21 @@ public class Deposit extends CommandLineFunctions{
         int incorrect_attempts = 0;
         while (incorrect_attempts < 3) {
             String DepositType = get_prompt_enter("DepositTypeChoice");
+
+            // Check if the input is valid
             if (!verify_input(DepositType)) {
                 io.println("Invalid input");
                 incorrect_attempts++;
                 continue;
             }else{
+                int DepositTypeInt = Integer.parseInt(DepositType);
+                // Exit if the user enters 5
+                if (DepositTypeInt == 5) {
+                    io.println("Exiting deposit prompt.");
+                    return;
+                }
+
+                // Get the deposit amount from the user
                 String deposit_amount_str = get_prompt_enter("DepositAmount");
                 float deposit_amount = 0;
                 try {
@@ -111,13 +130,18 @@ public class Deposit extends CommandLineFunctions{
                     io.println("Invalid amount. Please enter a valid number.");
                     continue;
                 }
-                Currency currency = get_currency(Integer.parseInt(DepositType));
+
+                // Get the currency type
+                Currency currency = get_currency(DepositTypeInt);
                 float amount_in_usd = convert_currency(deposit_amount, currency);
 
+                // Deposit the amount into the account
                 account.deposit(amount_in_usd);
                 db_interface.account_interface.update_account(account);
 
-                io.println("Deposit successful. New balance: " + account.balance);
+                String new_balance_text = convert_currency(account.get_balance(), currency) + currency.name();
+
+                io.println("Deposit successful. New balance: " + new_balance_text);
                 break;
             }
         }

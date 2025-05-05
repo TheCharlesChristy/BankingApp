@@ -34,22 +34,28 @@ public class ViewBalance extends CommandLineFunctions{
     }
 
     public float convert_currency(float amount, Currency currency) {
+        float converted_amount = amount;
+        io.debug("Converting currency: " + amount + " " + currency.name());
         switch (currency) {
             case Currency.USD:
-                return amount;
+                converted_amount = amount;
+                break;
 
             case Currency.EUR:
-                return amount * 0.85f;
+                converted_amount = amount * 0.85f;
+                break;
 
             case Currency.JPY:
-                return amount * 110.0f;
+                converted_amount = amount * 110.0f;
+                break;
 
             case Currency.GBP:
-                return amount * 0.72f;
-
-            default:
-                return amount;
+                converted_amount = amount * 0.72f;
+                break;
         }
+
+        // Truncate the converted amount to 2 decimal places
+        return (int)(converted_amount * 100) / 100.0f;
     }
 
     public Currency convert_choice_to_currency(String choice) {
@@ -81,11 +87,15 @@ public class ViewBalance extends CommandLineFunctions{
         Currency currency = Currency.USD;
         String choice = "";
         while (true) {
+            // Print the balance in the selected currency
             get_prompt_print("ViewBalance");
-            io.println("Balance: " + convert_currency(account.balance, currency) + " " + currency.name());
+            io.println("Balance: " + convert_currency(account.get_balance(), currency) + " " + currency.name());
+
+            // Print and prompt the options for currency selection
             get_prompt_print("ViewBalanceOptions");
             choice = get_prompt_enter("ViewBalanceChoice");
 
+            // Check if the choice is valid and set the currency accordingly
             if (is_choice_valid(choice)) {
                 currency = convert_choice_to_currency(choice);
             }else if (choice.equals("5")) {
