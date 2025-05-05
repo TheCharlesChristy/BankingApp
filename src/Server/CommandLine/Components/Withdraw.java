@@ -9,8 +9,6 @@ import src.Structs.Accounts;
 import src.Structs.Currency;
 
 public class Withdraw extends FundsManagerBase{
-    Users user;
-    Accounts account;
     public Withdraw(DataBaseInterface db_interface, Users user, Accounts account) {
         super(db_interface, user, account);
     }
