@@ -24,6 +24,7 @@ public class CommandLineInterface {
             int choice = components.admin_account_manager.run();
             if (choice == 1) {
                 // Search for user
+                Accounts account = components.admin_search_for_user.run();
                 break;
             } else {
                 // Logout
