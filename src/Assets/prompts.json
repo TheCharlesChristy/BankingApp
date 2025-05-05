@@ -22,5 +22,9 @@
     "Deposit": "Deposit ------------------------------",
     "DepositType": "Enter the currency type to deposit: ",
     "DepositTypeChoice": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit\n",
-    "DepositAmount": "Enter the amount to deposit: "
+    "DepositAmount": "Enter the amount to deposit: ",
+    "Withdraw": "Withdraw ------------------------------",
+    "WithdrawType": "Enter the currency type to withdraw: ",
+    "WithdrawTypeChoice": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit\n",
+    "WithdrawAmount": "Enter the amount to withdraw: "
 }

@@ -9,8 +9,6 @@ import src.Structs.Accounts;
 import src.Structs.Currency;
 
 public class Withdraw extends FundsManagerBase{
-    Users user;
-    Accounts account;
     public Withdraw(DataBaseInterface db_interface, Users user, Accounts account) {
         super(db_interface, user, account);
     }
@@ -27,47 +25,83 @@ public class Withdraw extends FundsManagerBase{
         prompt_withdraw();
     }
 
+    public float convert_currency(float amount, Currency currency) {
+        float converted_amount = amount;
+        io.debug("Converting currency: " + amount + " " + currency.name());
+        switch (currency) {
+            case Currency.USD:
+                converted_amount = amount;
+                break;
+
+            case Currency.EUR:
+                converted_amount = amount * 0.85f;
+                break;
+
+            case Currency.JPY:
+                converted_amount = amount * 110.0f;
+                break;
+
+            case Currency.GBP:
+                converted_amount = amount * 0.72f;
+                break;
+        }
+
+        // Truncate the converted amount to 2 decimal places
+        return (int)(converted_amount * 100) / 100.0f;
+    }
+
     public void prompt_withdraw() {
-        get_prompt_print("Deposit");
-        get_prompt_print("DepositType");
+        get_prompt_print("Withdraw");
+        get_prompt_print("WithdrawType");
         int incorrect_attempts = 0;
         while (incorrect_attempts < 3) {
-            String DepositType = get_prompt_enter("DepositTypeChoice");
+            String WithdrawType = get_prompt_enter("WithdrawTypeChoice");
 
             // Check if the input is valid
-            if (!verify_input(DepositType)) {
+            if (!verify_input(WithdrawType)) {
                 io.println("Invalid input");
                 incorrect_attempts++;
                 continue;
             }else{
-                int DepositTypeInt = Integer.parseInt(DepositType);
+                int WithdrawTypeInt = Integer.parseInt(WithdrawType);
                 // Exit if the user enters 5
-                if (DepositTypeInt == 5) {
-                    io.println("Exiting deposit prompt.");
+                if (WithdrawTypeInt == 5) {
+                    io.println("Exiting withdraw prompt.");
                     return;
                 }
 
-                // Get the deposit amount from the user
-                String deposit_amount_str = get_prompt_enter("DepositAmount");
-                float deposit_amount = 0;
+                // Print the users balance in the selected currency
+                Currency currency = get_currency(WithdrawTypeInt);
+                String balance_text = convert_currency(account.get_balance(), currency) + currency.name();
+                io.println("Your balance is: " + balance_text);
+
+
+                // Get the withdraw amount from the user
+                String withdraw_amount_str = get_prompt_enter("WithdrawAmount");
+                float withdraw_amount = 0;
                 try {
-                    deposit_amount = Float.parseFloat(deposit_amount_str);
+                    withdraw_amount = Float.parseFloat(withdraw_amount_str);
+                    if (withdraw_amount > account.get_balance()) {
+                        io.println("Insufficient funds. Please enter a valid amount.");
+                        continue;
+                    }
                 } catch (NumberFormatException e) {
                     io.println("Invalid amount. Please enter a valid number.");
                     continue;
                 }
 
-                // Get the currency type
-                Currency currency = get_currency(DepositTypeInt);
-                float amount_in_usd = convert_currency(deposit_amount, currency);
+                // Get the converted amount in USD
+                float amount_in_usd = convert_currency(withdraw_amount, currency);
 
-                // Deposit the amount into the account
-                account.deposit(amount_in_usd);
+                io.debug("Converted amount in USD: " + amount_in_usd);
+
+                // Withdraw the amount into the account
+                account.withdraw(amount_in_usd);
                 db_interface.account_interface.update_account(account);
 
                 String new_balance_text = convert_currency(account.get_balance(), currency) + currency.name();
 
-                io.println("Deposit successful. New balance: " + new_balance_text);
+                io.println("Withdraw successful. New balance: " + new_balance_text);
                 break;
             }
         }

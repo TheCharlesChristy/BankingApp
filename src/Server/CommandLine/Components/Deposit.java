@@ -9,8 +9,6 @@ import src.Structs.Accounts;
 import src.Structs.Currency;
 
 public class Deposit extends FundsManagerBase{
-    Users user;
-    Accounts account;
     public Deposit(DataBaseInterface db_interface, Users user, Accounts account) {
         super(db_interface, user, account);
     }
@@ -26,6 +24,8 @@ public class Deposit extends FundsManagerBase{
     public void run() {
         prompt_deposit();
     }
+
+    
 
     public void prompt_deposit() {
         get_prompt_print("Deposit");

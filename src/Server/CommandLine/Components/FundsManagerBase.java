@@ -1,6 +1,5 @@
 package src.Server.CommandLine.Components;
 
-import java.util.Optional;
 
 import src.Server.CommandLine.CommandLineFunctions;
 
@@ -11,8 +10,8 @@ import src.Structs.Accounts;
 import src.Structs.Currency;
 
 public class FundsManagerBase extends CommandLineFunctions{
-    Users user;
-    Accounts account;
+    public Users user;
+    public Accounts account;
     public FundsManagerBase(DataBaseInterface db_interface, Users user, Accounts account) {
         super(db_interface);
         this.user = user;

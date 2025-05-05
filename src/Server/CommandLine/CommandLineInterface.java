@@ -2,13 +2,7 @@ package src.Server.CommandLine;
 
 import src.Server.DataBaseInterface;
 
-import src.Server.CommandLine.Components.Login;
-import src.Server.CommandLine.Components.Register; 
-import src.Server.CommandLine.Components.AccountManager; 
-import src.Server.CommandLine.Components.AdminAccountManager; 
-import src.Server.CommandLine.Components.Deposit; 
-import src.Server.CommandLine.Components.MainMenu; 
-import src.Server.CommandLine.Components.ViewBalance; 
+import src.Server.CommandLine.Components.Components;
 import src.IOHandler;
 
 import src.Structs.Users;
@@ -16,30 +10,18 @@ import src.Structs.Accounts;
 
 public class CommandLineInterface {
     DataBaseInterface db_interface;
-    public MainMenu main_menu;
-    public Login login;
-    public Register register;
-    public AccountManager account_manager;
-    public AdminAccountManager admin_account_manager;
-    public ViewBalance view_balance;
-    public Deposit deposit;
+    public Components components;
     private IOHandler io = new IOHandler();
 
     public CommandLineInterface(DataBaseInterface db_interface) {
         this.db_interface = db_interface;
-        this.login = new Login(db_interface);
-        this.register = new Register(db_interface);
-        this.account_manager = new AccountManager(db_interface);
-        this.admin_account_manager = new AdminAccountManager(db_interface);
-        this.main_menu = new MainMenu(db_interface);
-        this.view_balance = new ViewBalance(db_interface);
-        this.deposit = new Deposit(db_interface);
+        this.components = new Components(db_interface);
         this.io = new IOHandler();
     }
 
     private void admin_account_main_loop(Users usr) {
         while (true) {
-            int choice = admin_account_manager.run();
+            int choice = components.admin_account_manager.run();
             if (choice == 1) {
                 // Search for user
                 break;
@@ -53,22 +35,26 @@ public class CommandLineInterface {
 
     private void account_main_loop(Users usr) {
         while (true) {
-            int choice = account_manager.run();
+            int choice = components.account_manager.run();
             if (choice == 1) {
                 // view account
-                view_balance.set_user(usr);
-                view_balance.run(usr);
-                view_balance.clear();
+                components.view_balance.set_user(usr);
+                components.view_balance.run(usr);
+                components.view_balance.clear();
             } else if (choice == 2) {
                 // deposit
-                deposit.set_user(usr);
                 Accounts account = db_interface.account_interface.get_account_by_uid(usr.get_id());
-                deposit.set_account(account);
-                deposit.run();
-                deposit.clear();
+                components.deposit.set_user(usr);
+                components.deposit.set_account(account);
+                components.deposit.run();
+                components.deposit.clear();
             } else if (choice == 3) {
                 // withdraw
-                io.debug("Withdraw not implemented yet.");
+                Accounts account = db_interface.account_interface.get_account_by_uid(usr.get_id());
+                components.withdraw.set_user(usr);
+                components.withdraw.set_account(account);
+                components.withdraw.run();
+                components.withdraw.clear();
             } else if (choice == 4) {
                 // transfer
                 io.debug("Transfer not implemented yet.");
@@ -82,10 +68,12 @@ public class CommandLineInterface {
 
     private void main_menu_loop() {
         while (true) {
-            int choice = main_menu.run();
+            int choice = components.main_menu.run();
             if (choice == 1) {
-                Users usr = login.run();
+                // Attempt login and get user object
+                Users usr = components.login.run();
                 if (usr != null) {
+                    // Check if the user is an admin or regular user
                     if (db_interface.admins_interface.is_admin(usr.get_id())){
                         io.debug("Admin account detected, entering admin mode...");
                         admin_account_main_loop(usr);
@@ -94,7 +82,7 @@ public class CommandLineInterface {
                     }
                 }
             } else if (choice == 2) {
-                register.run();
+                components.register.run();
             } else {
                 break;
             }
