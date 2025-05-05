@@ -36,6 +36,7 @@ public class CommandLineInterface {
     private void account_main_loop(Users usr) {
         while (true) {
             int choice = components.account_manager.run();
+            Accounts account = db_interface.account_interface.get_account_by_uid(usr.get_id());
             if (choice == 1) {
                 // view account
                 components.view_balance.set_user(usr);
@@ -43,21 +44,19 @@ public class CommandLineInterface {
                 components.view_balance.clear();
             } else if (choice == 2) {
                 // deposit
-                Accounts account = db_interface.account_interface.get_account_by_uid(usr.get_id());
                 components.deposit.set_user(usr);
                 components.deposit.set_account(account);
                 components.deposit.run();
                 components.deposit.clear();
             } else if (choice == 3) {
                 // withdraw
-                Accounts account = db_interface.account_interface.get_account_by_uid(usr.get_id());
                 components.withdraw.set_user(usr);
                 components.withdraw.set_account(account);
                 components.withdraw.run();
                 components.withdraw.clear();
             } else if (choice == 4) {
                 // transfer
-                io.debug("Transfer not implemented yet.");
+                components.transfer.run(account);
             } else {
                 // Logout
                 io.debug("Logging out of account...");

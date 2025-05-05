@@ -25,31 +25,6 @@ public class Withdraw extends FundsManagerBase{
         prompt_withdraw();
     }
 
-    public float convert_currency(float amount, Currency currency) {
-        float converted_amount = amount;
-        io.debug("Converting currency: " + amount + " " + currency.name());
-        switch (currency) {
-            case Currency.USD:
-                converted_amount = amount;
-                break;
-
-            case Currency.EUR:
-                converted_amount = amount * 0.85f;
-                break;
-
-            case Currency.JPY:
-                converted_amount = amount * 110.0f;
-                break;
-
-            case Currency.GBP:
-                converted_amount = amount * 0.72f;
-                break;
-        }
-
-        // Truncate the converted amount to 2 decimal places
-        return (int)(converted_amount * 100) / 100.0f;
-    }
-
     public void prompt_withdraw() {
         get_prompt_print("Withdraw");
         get_prompt_print("WithdrawType");
@@ -72,7 +47,7 @@ public class Withdraw extends FundsManagerBase{
 
                 // Print the users balance in the selected currency
                 Currency currency = get_currency(WithdrawTypeInt);
-                String balance_text = convert_currency(account.get_balance(), currency) + currency.name();
+                String balance_text = convert_to_currency(account.get_balance(), currency) + currency.name();
                 io.println("Your balance is: " + balance_text);
 
 
@@ -91,7 +66,7 @@ public class Withdraw extends FundsManagerBase{
                 }
 
                 // Get the converted amount in USD
-                float amount_in_usd = convert_currency(withdraw_amount, currency);
+                float amount_in_usd = convert_to_currency(withdraw_amount, currency);
 
                 io.debug("Converted amount in USD: " + amount_in_usd);
 
@@ -99,7 +74,7 @@ public class Withdraw extends FundsManagerBase{
                 account.withdraw(amount_in_usd);
                 db_interface.account_interface.update_account(account);
 
-                String new_balance_text = convert_currency(account.get_balance(), currency) + currency.name();
+                String new_balance_text = convert_to_currency(account.get_balance(), currency) + currency.name();
 
                 io.println("Withdraw successful. New balance: " + new_balance_text);
                 break;

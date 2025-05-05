@@ -26,5 +26,10 @@
     "Withdraw": "Withdraw ------------------------------",
     "WithdrawType": "Enter the currency type to withdraw: ",
     "WithdrawTypeChoice": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit\n",
-    "WithdrawAmount": "Enter the amount to withdraw: "
+    "WithdrawAmount": "Enter the amount to withdraw: ",
+    "Transfer": "Transfer ------------------------------",
+    "TransferToAccount": "Enter the account number to transfer to: ",
+    "TransferCurrency": "Enter the currency type to transfer: ",
+    "TransferCurrencyChoice": "1. USD, 2. EUR, 3. JPY, 4. GBP, 5. Exit\n",
+    "TransferAmount": "Enter the amount to transfer: "
 }

@@ -35,52 +35,6 @@ public class FundsManagerBase extends CommandLineFunctions{
         this.account = account;
     }
 
-    public float convert_currency(float amount, Currency currency) {
-        float converted_amount;
-        switch (currency) {
-            case Currency.USD:
-                converted_amount = amount;
-                break;
-
-            case Currency.EUR:
-                converted_amount =  amount / 0.85f;
-                break;
-
-            case Currency.JPY:
-                converted_amount =  amount / 110.0f;
-                break;
-
-            case Currency.GBP:
-                converted_amount = amount / 0.72f;
-                break;
-
-            default:
-                converted_amount =  amount;
-                break;
-        }
-
-        // Truncate the converted amount to 2 decimal places
-        return (int)(converted_amount * 100) / 100.0f;
-    }
-
-    protected Currency get_currency(int curr_type) {
-        switch (curr_type) {
-            case 1:
-                return Currency.USD;
-
-            case 2:
-                return Currency.EUR;
-
-            case 3:
-                return Currency.JPY;
-
-            case 4:
-                return Currency.GBP;
-
-        }
-        return Currency.USD;
-    }
-
     public void run() {
         // This method should be overridden in subclasses
         throw new UnsupportedOperationException("This method should be overridden in subclasses.");

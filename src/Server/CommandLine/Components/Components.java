@@ -1,7 +1,5 @@
 package src.Server.CommandLine.Components;
 
-import javax.xml.crypto.Data;
-
 import src.Server.DataBaseInterface;
 
 public class Components {
@@ -14,6 +12,7 @@ public class Components {
     public ViewBalance view_balance;
     public Deposit deposit;
     public Withdraw withdraw;
+    public Transfer transfer;
 
     public Components(DataBaseInterface db_interface) {
         this.db_interface = db_interface;
@@ -25,5 +24,6 @@ public class Components {
         this.view_balance = new ViewBalance(db_interface);
         this.deposit = new Deposit(db_interface);
         this.withdraw = new Withdraw(db_interface);
+        this.transfer = new Transfer(db_interface);
     }
 }

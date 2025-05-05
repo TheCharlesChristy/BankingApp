@@ -43,6 +43,10 @@ public class Accounts {
         return (int)(this.balance * 100) / 100.0f;
     }
 
+    public int get_account_id() {
+        return this.id;
+    }
+
     public void deposit(float amount) {
         this.balance += amount;
     }

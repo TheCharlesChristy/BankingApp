@@ -6,6 +6,7 @@ import src.IOHandler;
 import org.json.simple.JSONObject;
 
 import src.Structs.Accounts;
+import src.Structs.Currency;
 import src.Structs.UserInstance;
 import src.Structs.Users;
 
@@ -57,5 +58,93 @@ public class CommandLineFunctions {
 
     protected int generate_pin() {
         return (int) (Math.random() * 10000);
+    }
+
+    public float convert_from_currency(float amount, Currency currency) {
+        float converted_amount;
+        switch (currency) {
+            case Currency.USD:
+                converted_amount = amount;
+                break;
+
+            case Currency.EUR:
+                converted_amount =  amount / 0.85f;
+                break;
+
+            case Currency.JPY:
+                converted_amount =  amount / 110.0f;
+                break;
+
+            case Currency.GBP:
+                converted_amount = amount / 0.72f;
+                break;
+
+            default:
+                converted_amount =  amount;
+                break;
+        }
+
+        // Truncate the converted amount to 2 decimal places
+        return (int)(converted_amount * 100) / 100.0f;
+    }
+
+    public float convert_to_currency(float amount, Currency currency) {
+        float converted_amount = amount;
+        switch (currency) {
+            case Currency.USD:
+                converted_amount = amount;
+                break;
+
+            case Currency.EUR:
+                converted_amount = amount * 0.85f;
+                break;
+
+            case Currency.JPY:
+                converted_amount = amount * 110.0f;
+                break;
+
+            case Currency.GBP:
+                converted_amount = amount * 0.72f;
+                break;
+        }
+
+        // Truncate the converted amount to 2 decimal places
+        return (int)(converted_amount * 100) / 100.0f;
+    }
+
+    public Currency get_currency(int curr_type) {
+        switch (curr_type) {
+            case 1:
+                return Currency.USD;
+
+            case 2:
+                return Currency.EUR;
+
+            case 3:
+                return Currency.JPY;
+
+            case 4:
+                return Currency.GBP;
+
+        }
+        return Currency.USD;
+    }
+
+    public void transfer(Accounts from_account, Accounts to_account, float amount) {
+        // Check if the transfer is valid
+        if (from_account.get_balance() < amount) {
+            io.println("Insufficient funds for transfer.");
+            return;
+        }
+
+        // Perform the transfer
+        from_account.withdraw(amount);
+        to_account.deposit(amount);
+
+        // Update the accounts in the database
+        db_interface.account_interface.update_account(from_account);
+        db_interface.account_interface.update_account(to_account);
+
+        io.println("Transfer successful. New balance: " + from_account.get_balance());
     }
 }

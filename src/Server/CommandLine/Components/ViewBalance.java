@@ -33,49 +33,6 @@ public class ViewBalance extends CommandLineFunctions{
         user = null;
     }
 
-    public float convert_currency(float amount, Currency currency) {
-        float converted_amount = amount;
-        io.debug("Converting currency: " + amount + " " + currency.name());
-        switch (currency) {
-            case Currency.USD:
-                converted_amount = amount;
-                break;
-
-            case Currency.EUR:
-                converted_amount = amount * 0.85f;
-                break;
-
-            case Currency.JPY:
-                converted_amount = amount * 110.0f;
-                break;
-
-            case Currency.GBP:
-                converted_amount = amount * 0.72f;
-                break;
-        }
-
-        // Truncate the converted amount to 2 decimal places
-        return (int)(converted_amount * 100) / 100.0f;
-    }
-
-    public Currency convert_choice_to_currency(String choice) {
-        switch (choice) {
-            case "1":
-                return Currency.USD;
-
-            case "2":
-                return Currency.EUR;
-
-            case "3":
-                return Currency.JPY;
-
-            case "4":
-                return Currency.GBP;
-
-            default:
-                return Currency.USD;
-        }
-    }
 
     private boolean is_choice_valid(String choice) {
         return choice.equals("1") || choice.equals("2") || choice.equals("3") || choice.equals("4");
@@ -89,7 +46,7 @@ public class ViewBalance extends CommandLineFunctions{
         while (true) {
             // Print the balance in the selected currency
             get_prompt_print("ViewBalance");
-            io.println("Balance: " + convert_currency(account.get_balance(), currency) + " " + currency.name());
+            io.println("Balance: " + convert_to_currency(account.get_balance(), currency) + " " + currency.name());
 
             // Print and prompt the options for currency selection
             get_prompt_print("ViewBalanceOptions");
@@ -97,7 +54,8 @@ public class ViewBalance extends CommandLineFunctions{
 
             // Check if the choice is valid and set the currency accordingly
             if (is_choice_valid(choice)) {
-                currency = convert_choice_to_currency(choice);
+                int choiceInt = Integer.parseInt(choice);
+                currency = get_currency(choiceInt);
             }else if (choice.equals("5")) {
                 break;
             } else {

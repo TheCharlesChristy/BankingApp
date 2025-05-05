@@ -59,13 +59,13 @@ public class Deposit extends FundsManagerBase{
 
                 // Get the currency type
                 Currency currency = get_currency(DepositTypeInt);
-                float amount_in_usd = convert_currency(deposit_amount, currency);
+                float amount_in_usd = convert_from_currency(deposit_amount, currency);
 
                 // Deposit the amount into the account
                 account.deposit(amount_in_usd);
                 db_interface.account_interface.update_account(account);
 
-                String new_balance_text = convert_currency(account.get_balance(), currency) + currency.name();
+                String new_balance_text = convert_from_currency(account.get_balance(), currency) + currency.name();
 
                 io.println("Deposit successful. New balance: " + new_balance_text);
                 break;
