@@ -48,8 +48,7 @@ public class Accounts {
     }
 
     public float withdraw(float amount) {
-        if (this.balance >= amount) {
-            amount = this.balance;
+        if (amount <= this.balance) {
             this.balance -= amount;
         } else {
             System.out.println("Insufficient funds");

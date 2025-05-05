@@ -25,6 +25,8 @@ public class Deposit extends FundsManagerBase{
         prompt_deposit();
     }
 
+    
+
     public void prompt_deposit() {
         get_prompt_print("Deposit");
         get_prompt_print("DepositType");
