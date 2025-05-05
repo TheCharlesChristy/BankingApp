@@ -8,26 +8,26 @@ import src.Structs.Users;
 import src.Structs.Accounts;
 import src.Structs.Currency;
 
-public class Deposit extends FundsManagerBase{
+public class Withdraw extends FundsManagerBase{
     Users user;
     Accounts account;
-    public Deposit(DataBaseInterface db_interface, Users user, Accounts account) {
+    public Withdraw(DataBaseInterface db_interface, Users user, Accounts account) {
         super(db_interface, user, account);
     }
     
-    public Deposit(DataBaseInterface db_interface, Users user) {
+    public Withdraw(DataBaseInterface db_interface, Users user) {
         super(db_interface, user);
     }
 
-    public Deposit(DataBaseInterface db_interface) {
+    public Withdraw(DataBaseInterface db_interface) {
         super(db_interface);
     }
 
     public void run() {
-        prompt_deposit();
+        prompt_withdraw();
     }
 
-    public void prompt_deposit() {
+    public void prompt_withdraw() {
         get_prompt_print("Deposit");
         get_prompt_print("DepositType");
         int incorrect_attempts = 0;
