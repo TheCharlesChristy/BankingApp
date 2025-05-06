@@ -36,5 +36,15 @@
     "AdminSearchForUserUsername": "Enter the username to search for: ",
     "AdminSearchForUserNotFound": "User not found. Would you like to search again? (y/n): ",
     "AdminSearchForUserMaxAttempts": "Maximum attempts reached. Exiting search.",
-    "TooManyInvalidChoices": "Too many invalid choices. Exiting."
+    "InvalidChoice": "Invalid choice. Please try again.",
+    "TooManyInvalidChoices": "Too many invalid choices. Exiting.",
+    "AdminManageAccountChoice": "1. View Account Details\n2. Edit Account Details\n3. Delete Account\n4. Back to Admin Menu\n",
+    "AdminManageAccount": "Admin Account Management ------------------------------",
+    "AdminDeleteAccountConfirmation": "Are you sure you want to delete this account? (y/n): ",
+    "AdminDeleteAccountSuccess": "Account deleted successfully.",
+    "AdminDeleteAccountCancelled": "Account deletion cancelled.",
+    "AdminViewAccount": "Account Details ------------------------------",
+    "AdminViewAccountChoice": "1. View Account Details\n2. View Account Balace\n3. View Transaction History\n4. Back to Admin Menu\n",
+    "PressEnterToContinue": "Press Enter to continue...",
+    "DisplayMore": "Display more? (y/n): "
 }
