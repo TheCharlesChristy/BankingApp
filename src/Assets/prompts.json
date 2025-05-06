@@ -35,5 +35,6 @@
     "AdminSearchForUser": "Search for User ------------------------------",
     "AdminSearchForUserUsername": "Enter the username to search for: ",
     "AdminSearchForUserNotFound": "User not found. Would you like to search again? (y/n): ",
-    "AdminSearchForUserMaxAttempts": "Maximum attempts reached. Exiting search."
+    "AdminSearchForUserMaxAttempts": "Maximum attempts reached. Exiting search.",
+    "TooManyInvalidChoices": "Too many invalid choices. Exiting."
 }

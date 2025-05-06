@@ -29,6 +29,10 @@ public class ViewBalance extends CommandLineFunctions{
         prompt_view_balance(user);
     }
 
+    public void run(Accounts account) {
+        prompt_view_balance_from_account(account);
+    }
+
     public void clear() {
         user = null;
     }
@@ -41,6 +45,10 @@ public class ViewBalance extends CommandLineFunctions{
     public void prompt_view_balance(Users user) {
         int uid = db_interface.user_interface.get_userid(user.username);
         Accounts account = db_interface.account_interface.get_account_by_uid(uid);
+        prompt_view_balance_from_account(account);
+    }
+
+    public void prompt_view_balance_from_account(Accounts account) {
         Currency currency = Currency.USD;
         String choice = "";
         while (true) {
