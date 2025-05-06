@@ -25,7 +25,11 @@ public class CommandLineInterface {
             if (choice == 1) {
                 // Search for user
                 Accounts account = components.admin_search_for_user.run();
-                break;
+                if (account != null) {
+                    components.admin_manage_account.run(account);
+                } else {
+                    io.println("No account found.");
+                }
             } else {
                 // Logout
                 io.debug("Logging out of admin account...");

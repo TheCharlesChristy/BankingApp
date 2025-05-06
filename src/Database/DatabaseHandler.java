@@ -24,7 +24,8 @@ public class DatabaseHandler {
             io.read_file("src/Assets/Database/accounts_table.sql"),
             io.read_file("src/Assets/Database/transactions_table.sql"),
             io.read_file("src/Assets/Database/admins_table.sql"),
-            io.read_file("src/Assets/Database/defaults.sql")
+            io.read_file("src/Assets/Database/create_default_user.sql"),
+            io.read_file("src/Assets/Database/add_admin.sql")
         };
     }
 
@@ -164,7 +165,11 @@ public class DatabaseHandler {
         // Create a new database
         io.info("Creating new database.");
         for (String sql : sqls) {
-            execute_SQL(sql);
+            try {
+                execute_SQL(sql);
+            } catch (Exception e) {
+                io.debug("Ignoring exception while creating database: " + e.getMessage());
+            }
         }
     }
 

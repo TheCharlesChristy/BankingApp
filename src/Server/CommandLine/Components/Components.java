@@ -14,6 +14,7 @@ public class Components {
     public Withdraw withdraw;
     public Transfer transfer;
     public AdminSearchForUser admin_search_for_user;
+    public AdminManageAccount admin_manage_account;
 
     public Components(DataBaseInterface db_interface) {
         this.db_interface = db_interface;
@@ -27,5 +28,6 @@ public class Components {
         this.withdraw = new Withdraw(db_interface);
         this.transfer = new Transfer(db_interface);
         this.admin_search_for_user = new AdminSearchForUser(db_interface);
+        this.admin_manage_account = new AdminManageAccount(db_interface);
     }
 }
