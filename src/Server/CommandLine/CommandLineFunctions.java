@@ -150,7 +150,17 @@ public class CommandLineFunctions {
         // Update the account in the database
         db_interface.account_interface.update_account(account);
 
+        // Create a new transaction for the deposit
+        create_deposit_transaction(account, amount_usd);
+
         io.println("Deposit successful. New balance: " + account.get_balance());
+    }
+
+    public void create_deposit_transaction(Accounts account, float amount_usd) {
+        // Create a new transaction for the deposit
+        io.println("Creating deposit transaction for account: " + account.get_account_id() + " with amount: " + amount_usd);
+        Transactions transaction = new Transactions(account.get_account_id(), amount_usd, "deposit");
+        db_interface.transactions_interface.create_transaction(transaction);
     }
 
     public void withdraw(Accounts account, float amount_usd) {
@@ -166,7 +176,17 @@ public class CommandLineFunctions {
         // Update the account in the database
         db_interface.account_interface.update_account(account);
 
+        // Create a new transaction for the withdrawal
+        create_withdraw_transaction(account, amount_usd);
+
         io.println("Withdrawal successful. New balance: " + account.get_balance());
+    }
+
+    public void create_withdraw_transaction(Accounts account, float amount_usd) {
+        // Create a new transaction for the withdrawal
+        io.println("Creating withdrawal transaction for account: " + account.get_account_id() + " with amount: " + amount_usd);
+        Transactions transaction = new Transactions(account.get_account_id(), amount_usd, "withdrawal");
+        db_interface.transactions_interface.create_transaction(transaction);
     }
 
     public void transfer(Accounts from_account, Accounts to_account, float amount) {
@@ -180,11 +200,24 @@ public class CommandLineFunctions {
         from_account.withdraw(amount);
         to_account.deposit(amount);
 
+        // Create a new transaction for the transfer
+        create_withdraw_transaction(from_account, amount);
+        create_deposit_transaction(to_account, amount);
+
         // Update the accounts in the database
         db_interface.account_interface.update_account(from_account);
         db_interface.account_interface.update_account(to_account);
 
         io.println("Transfer successful. New balance: " + from_account.get_balance());
+    }
+
+    public Accounts get_account(int account_num) {
+        Accounts account = db_interface.account_interface.get_account(account_num);
+        if (account == null) {
+            io.println("Account not found.");
+            return null;
+        }
+        return account;
     }
 
     public Accounts get_account_by_username(String username) {

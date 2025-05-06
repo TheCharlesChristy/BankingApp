@@ -33,7 +33,7 @@ public class AdminManageAccount extends CommandLineFunctions {
             case 3:
                 // Delete account
                 delete_account(account);
-                break;
+                // Dont break, as we need to exit the menu after deletion
             case 4:
                 // Exit the management menu
                 running = false;
@@ -58,7 +58,7 @@ public class AdminManageAccount extends CommandLineFunctions {
         // Implementation for deleting an account
         // Prompt Confirmation before deletion
         String confirmation = get_prompt_enter("AdminDeleteAccountConfirmation");
-        if (confirmation.equalsIgnoreCase("yes")) {
+        if (confirmation.equalsIgnoreCase("y")) {
             // Call the database interface to delete the account
             db_interface.account_interface.delete_account(account.get_account_id());
             get_prompt_print("AdminDeleteAccountSuccess");

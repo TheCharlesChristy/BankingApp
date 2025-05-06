@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import src.Database.DatabaseHandler;
+import src.Structs.Admins;
 import src.Structs.Transactions;
 
 public class TransactionsInterface {
@@ -48,16 +49,22 @@ public class TransactionsInterface {
         }
     }
 
-    public List<Transactions> get_transactions(int account_id) {
-        String sql = "SELECT * FROM Transactions WHERE account_id = ?";
-        ResultSet results = db.get_raw_execute_SQL(sql, account_id);
+    public List<Transactions> get_transactions() {
+        String sql = "SELECT * FROM Transactions";
+        List<Map<String, Object>> results = db.get_many_execute_SQL(sql);
         List<Transactions> transactions = new ArrayList<Transactions>();
         
         try {
-            while (results.next()) {
-                Map<String, Object> result = parse_result_set(results);
+            // Check if ResultSet is null
+            if (results == null) {
+                return transactions;
+            }
+
+            for (Map<String, Object> result : results) {
+                // Check if the transaction belongs to the specified account_id
                 transactions.add(parse_transaction(result));
             }
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,19 +72,16 @@ public class TransactionsInterface {
         return transactions;
     }
 
-    private Map<String, Object> parse_result_set(ResultSet results) {
-        try {
-            Map<String, Object> result = new HashMap<String, Object>();
-            result.put("id", results.getInt("id"));
-            result.put("account_id", results.getInt("account_id"));
-            result.put("amount", results.getFloat("amount"));
-            result.put("type", results.getString("type"));
-            result.put("created_at", results.getString("created_at"));
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+    public List<Transactions> get_transactions(int account_id) {
+        List<Transactions> transactions = get_transactions();
+        List<Transactions> account_transactions = new ArrayList<Transactions>();
+
+        for (Transactions transaction : transactions) {
+            if (transaction.account_id == account_id) {
+                account_transactions.add(transaction);
+            }
         }
+        return account_transactions;
     }
 
     private Transactions parse_transaction(Map<String, Object> result) {

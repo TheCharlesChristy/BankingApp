@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import src.IOHandler;
@@ -87,21 +88,33 @@ public class DatabaseHandler {
         }
     }
 
-    public ResultSet get_raw_execute_SQL(String sql, Object... params) {
-        // Execute a SQL statement with a return value
+    public List<Map<String, Object>> get_many_execute_SQL(String sql, Object... params) {
+        // This method will execute a SQL statement and return a object
+        // that will contain the result of the query. This is a generic method.
+        // It need to return some type of List where each element is a Map<String, Object>.
+        // Each element in the List will be a row in the ResultSet
+        List<Map<String, Object>> results = new java.util.ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url);
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            
             // Set the parameters
             for (int i = 0; i < params.length; i++) {
                 statement.setObject(i + 1, params[i]);
             }
-            
-            return statement.executeQuery();
+            ResultSet output = statement.executeQuery();
+            int columnCount = output.getMetaData().getColumnCount();
+            while (output.next()) {
+                Map<String, Object> row = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    String columnName = output.getMetaData().getColumnName(i);
+                    Object value = output.getObject(i);
+                    row.put(columnName, value);
+                }
+                results.add(row);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return results;
     }
 
     public boolean check_database() {

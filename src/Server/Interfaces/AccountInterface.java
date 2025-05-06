@@ -70,8 +70,8 @@ public class AccountInterface {
     }
 
     public void update_account(Accounts account) {
-        String sql = "UPDATE Accounts SET balance = ?, interest_rate = ? WHERE id = ?";
-        db.execute_SQL(sql, account.balance, account.interest_rate, account.id);
+        String sql = "UPDATE Accounts SET balance = ?, interest_rate = ?, user_id = ? WHERE id = ?";
+        db.execute_SQL(sql, account.balance, account.interest_rate, account.user_id, account.id);
     }
 
     public void delete_account(int account_id) {
