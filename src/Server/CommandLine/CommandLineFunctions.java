@@ -7,10 +7,12 @@ import org.json.simple.JSONObject;
 
 import src.Structs.Accounts;
 import src.Structs.Currency;
+import src.Structs.Transactions;
 import src.Structs.UserInstance;
 import src.Structs.Users;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CommandLineFunctions {
     protected DataBaseInterface db_interface;
@@ -194,5 +196,10 @@ public class CommandLineFunctions {
 
         Accounts account = db_interface.account_interface.get_account_by_uid(user.get_id());
         return account;
+    }
+
+    public List<Transactions> get_account_transactions(Accounts account) {
+        List<Transactions> transactions = db_interface.transactions_interface.get_transactions(account.get_account_id());
+        return transactions;
     }
 }
