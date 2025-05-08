@@ -62,8 +62,7 @@ public class Deposit extends FundsManagerBase{
                 float amount_in_usd = convert_from_currency(deposit_amount, currency);
 
                 // Deposit the amount into the account
-                account.deposit(amount_in_usd);
-                db_interface.account_interface.update_account(account);
+                deposit(account, amount_in_usd);
 
                 String new_balance_text = convert_from_currency(account.get_balance(), currency) + currency.name();
 

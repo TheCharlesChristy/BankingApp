@@ -59,17 +59,24 @@ public class AdminsInterface {
     }
     
     public List<Admins> get_all_admins(UserInterface userInterface) {
-        String sql = "SELECT username FROM Admins";
-        ResultSet results = db.get_raw_execute_SQL(sql);
+        String sql = "SELECT * FROM Admins";
+        List<Map<String, Object>> results = db.get_many_execute_SQL(sql);
+        System.out.println("Results from get_all_admins query: " + results);
 
         List<Admins> admins = new ArrayList<>();
         try {
-            while (results.next()) {
-                int admin_id = results.getInt("id");
-                String username = results.getString("username");
-                Admins admin = new Admins(admin_id, username);
-                admins.add(admin);
+            if (results == null) {
+                System.out.println("ResultSet is null for all admins");
+                return admins;
             }
+
+            for (Map<String, Object> result : results) {
+                String username = (String) result.get("username");
+                int id = (int) result.get("id");
+                admins.add(new Admins(id, username));
+            }
+            
+            System.out.println("Found " + admins.size() + " admins");
         } catch (Exception e) {
             e.printStackTrace();
         }        

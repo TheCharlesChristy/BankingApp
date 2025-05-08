@@ -56,7 +56,8 @@ public class Withdraw extends FundsManagerBase{
                 float withdraw_amount = 0;
                 try {
                     withdraw_amount = Float.parseFloat(withdraw_amount_str);
-                    if (withdraw_amount > account.get_balance()) {
+                    float current_converted_balance = convert_to_currency(account.get_balance(), currency);
+                    if (withdraw_amount > current_converted_balance) {
                         io.println("Insufficient funds. Please enter a valid amount.");
                         continue;
                     }
@@ -66,13 +67,12 @@ public class Withdraw extends FundsManagerBase{
                 }
 
                 // Get the converted amount in USD
-                float amount_in_usd = convert_to_currency(withdraw_amount, currency);
+                float amount_in_usd = convert_from_currency(withdraw_amount, currency);
 
                 io.debug("Converted amount in USD: " + amount_in_usd);
 
                 // Withdraw the amount into the account
-                account.withdraw(amount_in_usd);
-                db_interface.account_interface.update_account(account);
+                withdraw(account, amount_in_usd);
 
                 String new_balance_text = convert_to_currency(account.get_balance(), currency) + currency.name();
 
