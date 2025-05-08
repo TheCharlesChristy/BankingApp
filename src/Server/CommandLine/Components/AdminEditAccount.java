@@ -35,10 +35,6 @@ public class AdminEditAccount extends CommandLineFunctions {
                 edit_account_balance(account);
                 break;
             case 3:
-                // Edit Account transactions
-                edit_account_transactions(account);
-                break;
-            case 4:
                 // Exit condition
                 get_prompt_print("ExitingEditAccount");
                 break;
@@ -135,9 +131,5 @@ public class AdminEditAccount extends CommandLineFunctions {
         io.println("New Balance: " + account.get_balance());
         get_prompt_enter("PressEnterToContinue");
         get_prompt_print("EditAccountBalanceExit");
-    }
-
-    private void edit_account_transactions(Accounts account) {
-        // Implementation for editting account transactions
     }
 }

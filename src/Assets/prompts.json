@@ -49,7 +49,7 @@
     "PressEnterToContinue": "Press Enter to continue...",
     "DisplayMore": "Display more? (y/n): ",
     "AdminEditAccount": "Edit Account Details ------------------------------",
-    "AdminEditAccountChoice": "1. Edit Account Details\n2. Edit Balance\n3. Edit Transaction History\n4. Back to Admin Menu\n",
+    "AdminEditAccountChoice": "1. Edit Account Details\n2. Edit Balance\n3. Back to Admin Menu\n",
     "ExitingEditAccount": "Exiting Edit Account...",
     "EditAccountDetailsHeader": "Edit Account Details ------------------------------",
     "EditAccountDetailsNewUsername": "Enter username of new owner: ",
