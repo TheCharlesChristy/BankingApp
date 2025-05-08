@@ -50,8 +50,7 @@ public class LoginPage extends ComponentBase {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                username = usernameField.getText();
-                password = new String(passwordField.getPassword());
+            login();
             }
         });
 
@@ -76,6 +75,10 @@ public class LoginPage extends ComponentBase {
 
     public String getPassword() {
         return password;
+    }
+
+    public void login() {
+        main_window.gotoBankingInterface();
     }
 
     public void gotoRegister() {

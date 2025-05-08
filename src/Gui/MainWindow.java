@@ -52,8 +52,14 @@ public class MainWindow extends JFrame {
         setTitle("Register");
     }
 
+    public void gotoBankingInterface() {
+        setContent(pages.BANKING_INTERFACE);
+        setTitle("Banking Interface");
+    }
+
     public static void main(String[] args) {
         MainWindow window = new MainWindow("Main Window");
         window.setVisible(true);
+        window.gotoBankingInterface(); // Example to show the banking interface
     }
 }
