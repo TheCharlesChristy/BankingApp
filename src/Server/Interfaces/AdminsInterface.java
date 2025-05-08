@@ -71,9 +71,7 @@ public class AdminsInterface {
             }
 
             for (Map<String, Object> result : results) {
-                String username = (String) result.get("username");
-                int id = (int) result.get("id");
-                admins.add(new Admins(id, username));
+                admins.add(parse_admin(result));
             }
             
             System.out.println("Found " + admins.size() + " admins");
@@ -81,6 +79,12 @@ public class AdminsInterface {
             e.printStackTrace();
         }        
         return admins;
+    }
+
+    public Admins parse_admin(Map<String, Object> result) {
+        String username = (String) result.get("username");
+        int id = (int) result.get("id");
+        return new Admins(id, username);
     }
     
     public void delete_admin(String username) {

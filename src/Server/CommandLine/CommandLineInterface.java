@@ -78,7 +78,7 @@ public class CommandLineInterface {
                 Users usr = components.login.run();
                 if (usr != null) {
                     // Check if the user is an admin or regular user
-                    if (db_interface.admins_interface.is_admin(usr.get_id())){
+                    if (db_interface.admins_interface.is_admin(usr.get_username())){
                         io.debug("Admin account detected, entering admin mode...");
                         admin_account_main_loop(usr);
                     }else {
