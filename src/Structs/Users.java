@@ -97,4 +97,8 @@ public class Users {
     public void set_pin(int pin) {
         this.pin = pin;
     }
+
+    public boolean verify_password(String password) {
+        return this.password.equals(password);
+    }
 }

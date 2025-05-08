@@ -6,6 +6,7 @@ import src.IOHandler;
 import org.json.simple.JSONObject;
 
 import src.Structs.Accounts;
+import src.Structs.Admins;
 import src.Structs.Currency;
 import src.Structs.Transactions;
 import src.Structs.UserInstance;
@@ -234,5 +235,65 @@ public class CommandLineFunctions {
     public List<Transactions> get_account_transactions(Accounts account) {
         List<Transactions> transactions = db_interface.transactions_interface.get_transactions(account.get_account_id());
         return transactions;
+    }
+
+    public Accounts register(String username, String password, String email) {
+        // Check if the user already exists
+        Users user = db_interface.user_interface.get_user(username);
+        if (user != null) {
+            io.println("User already exists.");
+            return null;
+        }
+
+        // Create a new user
+        user = new Users(username, password, email, generate_pin());
+        db_interface.create_user(user);
+        // Everything is handled in the create_user method
+
+        // Get the account for the user
+        Accounts account = db_interface.account_interface.get_account_by_uid(user.get_id());
+        if (account == null) {
+            // Fatal error: account should have been created in create_user
+            io.println("Fatal error: account not found after user creation.");
+            return null;
+        }
+
+        return account;
+    }
+
+    public Accounts login(String username, String password) {
+        // Check if the user exists
+        Users user = db_interface.user_interface.get_user(username);
+        if (user == null) {
+            io.println("User not found.");
+            return null;
+        }
+
+        // Check if the password is correct
+        if (!user.verify_password(password)) {
+            io.println("Incorrect password.");
+            return null;
+        }
+
+        // Get the account for the user
+        Accounts account = db_interface.account_interface.get_account_by_uid(user.get_id());
+        if (account == null) {
+            io.println("Account not found.");
+            return null;
+        }
+
+        return account;
+    }
+
+    public boolean is_user_admin(Users user) {
+        // Check if the user is an admin
+        List<Admins> admins = db_interface.admins_interface.get_all_admins(db_interface.user_interface);
+        
+        for (Admins admin : admins) {
+            if (admin.username.equals(user.get_username())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

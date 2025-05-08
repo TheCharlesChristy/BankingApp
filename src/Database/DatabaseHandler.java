@@ -64,8 +64,10 @@ public class DatabaseHandler {
             // Set the parameters
             for (int i = 0; i < params.length; i++) {
                 statement.setObject(i + 1, params[i]);
+                io.debug("Parameter " + (i + 1) + ": " + params[i]);
             }
             
+            io.debug("Executing SQL: " + statement.toString());
             ResultSet output = statement.executeQuery();
             
             if (output.next()) {
@@ -80,9 +82,13 @@ public class DatabaseHandler {
                 }
                 
                 return row;
+            } else {
+                io.debug("No results found for SQL: " + sql);
+                return null;
             }
-            return null;
         } catch (SQLException e) {
+            io.error("SQL Error in get_execute_SQL: " + e.getMessage());
+            io.debug("Failed SQL: " + sql);
             e.printStackTrace();
             return null;
         }
