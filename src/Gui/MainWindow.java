@@ -3,10 +3,12 @@ package src.Gui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import src.Gui.Components.LoginPage;
+
+import src.Gui.Components.Pages;
 
 public class MainWindow extends JFrame {
     private JPanel content;
+    public Pages pages;
 
     public MainWindow(String title) {
         super(title);
@@ -14,6 +16,8 @@ public class MainWindow extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        this.pages = new Pages(this);
+        this.setContent(pages.LOGIN);
     }
 
     public void setContent(JPanel newContent) {
@@ -30,10 +34,26 @@ public class MainWindow extends JFrame {
         return content;
     }
 
+    public void setTitle(String title) {
+        super.setTitle(title);
+    }
+
+    public String getTitle() {
+        return super.getTitle();
+    }
+
+    public void gotoLogin() {
+        setContent(pages.LOGIN);
+        setTitle("Login");
+    }
+
+    public void gotoRegister() {
+        setContent(pages.REGISTER);
+        setTitle("Register");
+    }
+
     public static void main(String[] args) {
         MainWindow window = new MainWindow("Main Window");
-        LoginPage loginPage = new LoginPage(window);
-        window.setContent(loginPage);
         window.setVisible(true);
     }
 }
