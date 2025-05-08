@@ -54,6 +54,20 @@ public class LoginPage extends ComponentBase {
                 password = new String(passwordField.getPassword());
             }
         });
+
+        // Register button below Login button
+        JButton registerButton = new JButton("Register");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        add(registerButton, gbc);
+
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                gotoRegister();
+            }
+        });
     }
 
     public String getUsername() {
@@ -62,5 +76,14 @@ public class LoginPage extends ComponentBase {
 
     public String getPassword() {
         return password;
+    }
+
+    public void gotoRegister() {
+        if (main_window != null) {
+            main_window.gotoRegister();
+        }else {
+            // Exit the application if main_window is null
+            System.exit(0);
+        }
     }
 }
