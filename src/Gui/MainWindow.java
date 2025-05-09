@@ -72,9 +72,14 @@ public class MainWindow extends JFrame {
         setTitle("Transfer");
     }
 
+    public void gotoAdminDashboard() {
+        setContent(pages.ADMIN_DASHBOARD);
+        setTitle("Admin Dashboard");
+    }
+
     public static void main(String[] args) {
         MainWindow window = new MainWindow("Main Window");
         window.setVisible(true);
-        window.gotoTransfer();
+        window.gotoAdminDashboard();
     }
 }
