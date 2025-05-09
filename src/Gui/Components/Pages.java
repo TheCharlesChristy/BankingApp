@@ -3,6 +3,7 @@ package src.Gui.Components;
 import src.Gui.MainWindow;
 import src.Gui.Components.UserDashboard.BankingInterface;
 import src.Gui.Components.AdminDashboard.AdminDashboard;
+import src.Gui.Components.AdminDashboard.ManageUserPage;
 
 public class Pages {
     public LoginPage LOGIN;
@@ -12,6 +13,7 @@ public class Pages {
     public WithdrawPage WITHDRAW;
     public TransferPage TRANSFER;
     public AdminDashboard ADMIN_DASHBOARD;
+    public ManageUserPage MANAGE_USER_PAGE;
 
     public Pages(MainWindow main_window) {
         LOGIN = new LoginPage(main_window);
@@ -21,5 +23,6 @@ public class Pages {
         WITHDRAW = new WithdrawPage(main_window);
         TRANSFER = new TransferPage(main_window);
         ADMIN_DASHBOARD = new AdminDashboard(main_window);
+        MANAGE_USER_PAGE = new ManageUserPage(main_window);
     }
 }

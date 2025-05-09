@@ -13,7 +13,8 @@ public class MainWindow extends JFrame {
     public MainWindow(String title) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(1000, 600);
+        setMinimumSize(new java.awt.Dimension(1000, 600));
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         this.pages = new Pages(this);
@@ -77,9 +78,14 @@ public class MainWindow extends JFrame {
         setTitle("Admin Dashboard");
     }
 
+    public void gotoManageUserPage() {
+        setContent(pages.MANAGE_USER_PAGE);
+        setTitle("Manage User Page");
+    }
+
     public static void main(String[] args) {
         MainWindow window = new MainWindow("Main Window");
         window.setVisible(true);
-        window.gotoAdminDashboard();
+        window.gotoManageUserPage();
     }
 }
