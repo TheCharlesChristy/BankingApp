@@ -24,25 +24,42 @@ public class AdminDashboard extends ComponentBase {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(Color.WHITE);
 
-        // Top panel with logout button
+        // Top panel with logout button (styled)
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topPanel.setBackground(new Color(240, 245, 255));
         logoutButton = new JButton("Logout");
-        logoutButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        logoutButton.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        logoutButton.setForeground(Color.WHITE);
+        logoutButton.setBackground(new Color(220, 53, 69)); // Bootstrap danger red
+        logoutButton.setFocusPainted(false);
+        logoutButton.setBorder(BorderFactory.createEmptyBorder(6, 18, 6, 18));
         logoutButton.addActionListener(e -> logout());
         topPanel.add(logoutButton);
 
-        // Middle panel with account ID search
+        // Middle panel with account ID search (styled)
         JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        userPanel.setOpaque(false);
-        searchField = new JTextField(10);
-        userPanel.add(new JLabel("Account ID:"));
+        userPanel.setOpaque(true);
+        userPanel.setBackground(new Color(250, 250, 250));
+        userPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)),
+            BorderFactory.createEmptyBorder(10, 0, 10, 0)));
+        JLabel accountLabel = new JLabel("Account ID:");
+        accountLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        userPanel.add(accountLabel);
+        searchField = new JTextField(12);
+        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        searchField.setPreferredSize(new Dimension(120, 28));
         userPanel.add(searchField);
         searchButton = new JButton("Search");
-        searchButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        searchButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        searchButton.setBackground(new Color(0, 123, 255)); // Bootstrap primary blue
+        searchButton.setForeground(Color.WHITE);
+        searchButton.setFocusPainted(false);
+        searchButton.setBorder(BorderFactory.createEmptyBorder(6, 18, 6, 18));
         searchButton.addActionListener(e -> searchUser());
         userPanel.add(searchButton);
 
-        // Line graph (JFreeChart) at the bottom, but using a vertical BoxLayout for full height
+        // Line graph (JFreeChart) with border and anti-aliasing
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         // Example data (replace with real data)
         dataset.addValue(200, "Withdrawals", "2025-05-01");
@@ -60,13 +77,21 @@ public class AdminDashboard extends ComponentBase {
             "Amount",
             dataset
         );
+        lineChart.setBackgroundPaint(Color.WHITE);
+        lineChart.getPlot().setBackgroundPaint(new Color(245, 245, 255));
+        lineChart.setAntiAlias(true);
         chartPanel = new ChartPanel(lineChart);
-        chartPanel.setPreferredSize(new Dimension(600, 400));
+        chartPanel.setPreferredSize(new Dimension(600, 500));
+        chartPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Transaction Trends"),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        chartPanel.setBackground(Color.WHITE);
 
         // Use a panel with BoxLayout to control vertical sizing
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        mainPanel.setBackground(Color.WHITE);
+        topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
         userPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
         chartPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         mainPanel.add(topPanel);
