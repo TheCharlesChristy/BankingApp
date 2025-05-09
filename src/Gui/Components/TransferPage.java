@@ -8,7 +8,7 @@ import src.Gui.ComponentBase;
 import src.Gui.MainWindow;
 
 public class TransferPage extends ComponentBase {
-    private JComboBox<String> accountDropdown;
+    private JTextField accountNumberField;
     private JSpinner amountSpinner;
     private JComboBox<String> currencyDropdown;
     private JButton submitButton;
@@ -34,14 +34,14 @@ public class TransferPage extends ComponentBase {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Target Account Dropdown
-        JLabel accountLabel = new JLabel("Target Account:");
+        // Target Account Number Input
+        JLabel accountLabel = new JLabel("Target Account Number:");
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(accountLabel, gbc);
-        accountDropdown = new JComboBox<>(new String[]{"Account 1", "Account 2", "Account 3"});
+        accountNumberField = new JTextField(12);
         gbc.gridx = 1;
-        formPanel.add(accountDropdown, gbc);
+        formPanel.add(accountNumberField, gbc);
 
         // Amount Spinner
         JLabel amountLabel = new JLabel("Amount:");
@@ -80,10 +80,19 @@ public class TransferPage extends ComponentBase {
     }
 
     private void submit() {
-        String targetAccount = (String) accountDropdown.getSelectedItem();
-        double amount = (Double) amountSpinner.getValue();
-        String currency = (String) currencyDropdown.getSelectedItem();
-        // TODO: Implement transfer logic
-        JOptionPane.showMessageDialog(this, "Transfer submitted to " + targetAccount + " for " + amount + " " + currency);
+        String input = accountNumberField.getText().trim();
+        if (input.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter an account number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            int accountNum = Integer.parseInt(input);
+            double amount = (Double) amountSpinner.getValue();
+            String currency = (String) currencyDropdown.getSelectedItem();
+            // TODO: Lookup account by number and implement transfer logic
+            JOptionPane.showMessageDialog(this, "Transfer submitted to account #" + accountNum + " for " + amount + " " + currency);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid account number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
