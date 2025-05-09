@@ -6,11 +6,21 @@ import java.awt.BorderLayout;
 
 import src.Gui.Components.Pages;
 
+import src.Structs.UserInstance;
+import src.Server.CommandLine.CommandLineFunctions;
+import src.Server.DataBaseInterface;
+
 public class MainWindow extends JFrame {
     private JPanel content;
     public Pages pages;
 
-    public MainWindow(String title) {
+    public UserInstance current_user_instance;
+    public UserInstance admin_search_for_user_instance;
+    public UserInstance target_user_instance;
+
+    public CommandLineFunctions cmd_functions;
+
+    public MainWindow(String title, DataBaseInterface db_interface) {
         super(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 600);
@@ -19,9 +29,12 @@ public class MainWindow extends JFrame {
         setLayout(new BorderLayout());
         this.pages = new Pages(this);
         this.setContent(pages.LOGIN);
+
+        this.cmd_functions = new CommandLineFunctions(db_interface);
     }
 
     public void setContent(JPanel newContent) {
+        clear_pages();
         if (content != null) {
             remove(content);
         }
@@ -41,6 +54,34 @@ public class MainWindow extends JFrame {
 
     public String getTitle() {
         return super.getTitle();
+    }
+
+    public void setCurrentUserInstance(UserInstance user_instance) {
+        this.current_user_instance = user_instance;
+    }
+
+    public UserInstance getCurrentUserInstance() {
+        return current_user_instance;
+    }
+
+    public void setAdminSearchForUserInstance(UserInstance user_instance) {
+        this.admin_search_for_user_instance = user_instance;
+    }
+
+    public UserInstance getAdminSearchForUserInstance() {
+        return admin_search_for_user_instance;
+    }
+
+    public void setTargetUserInstance(UserInstance user_instance) {
+        this.target_user_instance = user_instance;
+    }
+
+    public UserInstance getTargetUserInstance() {
+        return target_user_instance;
+    }
+
+    private void clear_pages() {
+        pages.clear();
     }
 
     public void gotoWelcomePage() {
@@ -104,7 +145,8 @@ public class MainWindow extends JFrame {
     }
 
     public static void main(String[] args) {
-        MainWindow window = new MainWindow("Main Window");
+        DataBaseInterface db_interface = new DataBaseInterface();
+        MainWindow window = new MainWindow("Main Window", db_interface);
         window.setVisible(true);
         window.gotoWelcomePage();
     }

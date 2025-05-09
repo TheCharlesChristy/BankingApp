@@ -1,14 +1,9 @@
-import java.util.List;
-
 import src.IOHandler;
 import src.Database.DatabaseHandler;
 
 import src.Server.DataBaseInterface;
 
 import src.Server.CommandLine.CommandLineInterface;
-import src.Structs.Accounts;
-import src.Structs.Admins;
-import src.Structs.Users;
 
 public class App {
     public IOHandler io;
