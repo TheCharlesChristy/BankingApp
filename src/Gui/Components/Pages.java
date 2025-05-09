@@ -24,6 +24,10 @@ public class Pages {
     public AdminTransferPage ADMIN_TRANSFER;
 
     public Pages(MainWindow main_window) {
+        init_pages(main_window);
+    }
+
+    private void init_pages(MainWindow main_window) {
         WELCOME = new WelcomePage(main_window);
         LOGIN = new LoginPage(main_window);
         REGISTER = new RegisterPage(main_window);
@@ -36,5 +40,28 @@ public class Pages {
         ADMIN_DEPOSIT = new AdminDepositPage(main_window);
         ADMIN_WITHDRAW = new AdminWithdrawPage(main_window);
         ADMIN_TRANSFER = new AdminTransferPage(main_window);
+    }
+
+
+    public void delete_pages() {
+        WELCOME = null;
+        LOGIN = null;
+        REGISTER = null;
+        BANKING_INTERFACE = null;
+        DEPOSIT = null;
+        WITHDRAW = null;
+        TRANSFER = null;
+        ADMIN_DASHBOARD = null;
+        MANAGE_USER_PAGE = null;
+        ADMIN_DEPOSIT = null;
+        ADMIN_WITHDRAW = null;
+        ADMIN_TRANSFER = null;
+    }
+
+
+    public void clear(MainWindow main_window) {
+        delete_pages();
+        // Reinitialize pages
+        init_pages(main_window);
     }
 }

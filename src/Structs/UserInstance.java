@@ -2,37 +2,31 @@ package src.Structs;
 
 public class UserInstance {
     public Accounts account;
-    public Admins admin;
-    public Transactions transaction;
     public Users user;
     public boolean is_admin = false;
 
-    public UserInstance(Accounts account, Admins admin, Transactions transaction, Users user) {
+    public UserInstance(Accounts account, Users user, Admins admin) {
         this.account = account;
-        this.admin = admin;
-        this.transaction = transaction;
         this.user = user;
         if (admin != null) {
             this.is_admin = true;
         }
     }
 
-    public UserInstance(Accounts account, Transactions transaction, Users user) {
+    public UserInstance(Accounts account, Users user, boolean is_admin) {
         this.account = account;
-        this.transaction = transaction;
         this.user = user;
+        this.is_admin = is_admin;
+    }
+
+    public UserInstance(Accounts account, Users user) {
+        this.account = account;
+        this.user = user;
+        this.is_admin = false;
     }
 
     public Accounts getAccount() {
         return account;
-    }
-
-    public Admins getAdmin() {
-        return admin;
-    }
-
-    public Transactions getTransaction() {
-        return transaction;
     }
 
     public Users getUser() {

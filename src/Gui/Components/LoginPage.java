@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import src.Gui.ComponentBase;
 import src.Gui.MainWindow;
+import src.Structs.UserInstance;
+import src.Structs.Users;
 
 public class LoginPage extends ComponentBase {
     private String username;
@@ -94,11 +96,28 @@ public class LoginPage extends ComponentBase {
     }
 
     public void login() {
-        boolean admin = true;
-        if (admin) {
-            main_window.gotoAdminDashboard();
+        // Get the username and password from the text fields
+        username = usernameField.getText();
+        password = new String(passwordField.getPassword());
+
+        Users user = main_window.cmd_functions.login_user(username, password);
+
+        if (user != null) {
+            // Get the user instance from the account
+            UserInstance user_instance = main_window.cmd_functions.get_user_instance(user);
+            main_window.setCurrentUserInstance(user_instance);
+            
+            // if the user is an admin goto the admin page
+            if (user_instance.is_admin) {
+                main_window.gotoAdminDashboard();
+            } else {
+                // Otherwise, go to the user page
+                System.out.println("User instance: " + user_instance);
+                main_window.gotoBankingInterface();
+            }
+
         } else {
-            main_window.gotoBankingInterface();
+            JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
 

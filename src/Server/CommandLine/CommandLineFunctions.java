@@ -248,6 +248,7 @@ public class CommandLineFunctions {
         // Create a new user
         user = new Users(username, password, email, generate_pin());
         db_interface.create_user(user);
+        user = db_interface.user_interface.get_user(username);
         // Everything is handled in the create_user method
 
         // Get the account for the user
@@ -285,6 +286,24 @@ public class CommandLineFunctions {
         return account;
     }
 
+    public Users login_user(String username, String password) {
+        // Check if the user exists
+        Users user = db_interface.user_interface.get_user(username);
+        return user;
+        // if (user == null) {
+        //     io.println("User not found.");
+        //     return null;
+        // }
+
+        // // Check if the password is correct
+        // if (!user.verify_password(password)) {
+        //     io.println("Incorrect password.");
+        //     return null;
+        // }
+
+        // return user;
+    }
+
     public boolean is_user_admin(Users user) {
         // Check if the user is an admin
         List<Admins> admins = db_interface.admins_interface.get_all_admins(db_interface.user_interface);
@@ -295,5 +314,26 @@ public class CommandLineFunctions {
             }
         }
         return false;
+    }
+
+    public UserInstance get_user_instance(Accounts account) {
+        // Get the user instance for the account
+        Users user = db_interface.user_interface.get_user(account.user_id);
+
+        if (user == null) {
+            io.println("User not found.");
+            return null;
+        }
+
+        UserInstance user_instance = new UserInstance(account, user, is_user_admin(user));
+        return user_instance;
+    }
+
+    public UserInstance get_user_instance(Users user) {
+        // Get the user instance for the user
+        Accounts account = db_interface.account_interface.get_account_by_uid(user.get_id());
+
+        UserInstance user_instance = new UserInstance(account, user, is_user_admin(user));
+        return user_instance;
     }
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import src.Gui.ComponentBase;
 import src.Gui.MainWindow;
+import src.Structs.Accounts;
 
 public class RegisterPage extends ComponentBase {
     private JTextField usernameField;
@@ -86,15 +87,85 @@ public class RegisterPage extends ComponentBase {
         gbc.gridwidth = 2;
         formPanel.add(registerButton, gbc);
 
-        registerButton.addActionListener(e -> {
+        registerButton.addActionListener(_ -> {
             username = usernameField.getText();
             email = emailField.getText();
             password = new String(passwordField.getPassword());
             confirmPassword = new String(confirmPasswordField.getPassword());
-            // You can add validation or callback here
+            if(fieldCheck()){
+                register();
+            }
         });
 
         add(formPanel, BorderLayout.CENTER);
+    }
+
+    public boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(emailRegex);
+    }
+
+    public boolean isValidPassword(String password) {
+        // Password must be at least 8 characters long
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        // Check for uppercase letter
+        if (!password.matches(".*[A-Z].*")) {
+            JOptionPane.showMessageDialog(this, "Password must contain at least one uppercase letter", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        // Check for lowercase letter
+        if (!password.matches(".*[a-z].*")) {
+            JOptionPane.showMessageDialog(this, "Password must contain at least one lowercase letter", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        // Check for digit
+        if (!password.matches(".*\\d.*")) {
+            JOptionPane.showMessageDialog(this, "Password must contain at least one digit", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        // Check for special character
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*")) {
+            JOptionPane.showMessageDialog(this, "Password must contain at least one special character", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        return true;
+    }
+
+    public boolean fieldCheck() {
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!isValidEmail(email)) {
+            JOptionPane.showMessageDialog(this, "Invalid email format!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!isValidPassword(password)) {
+            JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (!password.equals(confirmPassword)) {
+            JOptionPane.showMessageDialog(this, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return true;
+    }
+
+    public void register() {
+        Accounts acc = main_window.cmd_functions.register(username, confirmPassword, email);
+        if (acc != null) {
+            JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            main_window.gotoLogin();
+        } else {
+            JOptionPane.showMessageDialog(this, "Registration failed!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void go_back() {
