@@ -101,8 +101,7 @@ public class AdminDashboard extends ComponentBase {
     }
 
     private void logout() {
-        System.out.println("Logging out");
-        // You can add navigation logic here
+        main_window.gotoLogin();
     }
 
     private void searchUser() {
@@ -115,6 +114,7 @@ public class AdminDashboard extends ComponentBase {
             int id = Integer.parseInt(accountId);
             // TODO: Implement user search logic
             JOptionPane.showMessageDialog(this, "Searched for account ID: " + id);
+            main_window.gotoManageUserPage();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Invalid account ID.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }

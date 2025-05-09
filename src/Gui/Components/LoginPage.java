@@ -16,7 +16,21 @@ public class LoginPage extends ComponentBase {
 
     public LoginPage(MainWindow main_window) {
         super(main_window);
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
+
+        // Back button at the top left
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                go_back();
+            }
+        });
+        topPanel.add(backButton);
+        add(topPanel, BorderLayout.NORTH);
+
+        JPanel centerPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -24,33 +38,33 @@ public class LoginPage extends ComponentBase {
         JLabel userLabel = new JLabel("Username:");
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(userLabel, gbc);
+        centerPanel.add(userLabel, gbc);
 
         usernameField = new JTextField(15);
         gbc.gridx = 1;
         gbc.gridy = 0;
-        add(usernameField, gbc);
+        centerPanel.add(usernameField, gbc);
 
         JLabel passLabel = new JLabel("Password:");
         gbc.gridx = 0;
         gbc.gridy = 1;
-        add(passLabel, gbc);
+        centerPanel.add(passLabel, gbc);
 
         passwordField = new JPasswordField(15);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        add(passwordField, gbc);
+        centerPanel.add(passwordField, gbc);
 
         JButton loginButton = new JButton("Login");
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        add(loginButton, gbc);
+        centerPanel.add(loginButton, gbc);
 
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            login();
+                login();
             }
         });
 
@@ -59,7 +73,7 @@ public class LoginPage extends ComponentBase {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
-        add(registerButton, gbc);
+        centerPanel.add(registerButton, gbc);
 
         registerButton.addActionListener(new ActionListener() {
             @Override
@@ -67,6 +81,8 @@ public class LoginPage extends ComponentBase {
                 gotoRegister();
             }
         });
+
+        add(centerPanel, BorderLayout.CENTER);
     }
 
     public String getUsername() {
@@ -78,13 +94,27 @@ public class LoginPage extends ComponentBase {
     }
 
     public void login() {
-        main_window.gotoBankingInterface();
+        boolean admin = true;
+        if (admin) {
+            main_window.gotoAdminDashboard();
+        } else {
+            main_window.gotoBankingInterface();
+        }
     }
 
     public void gotoRegister() {
         if (main_window != null) {
             main_window.gotoRegister();
-        }else {
+        } else {
+            // Exit the application if main_window is null
+            System.exit(0);
+        }
+    }
+
+    public void go_back() {
+        if (main_window != null) {
+            main_window.gotoWelcomePage();
+        } else {
             // Exit the application if main_window is null
             System.exit(0);
         }
