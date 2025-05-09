@@ -14,9 +14,9 @@ public class MainWindow extends JFrame {
     private JPanel content;
     public Pages pages;
 
-    public UserInstance current_user_instance;
-    public UserInstance admin_search_for_user_instance;
-    public UserInstance target_user_instance;
+    public static UserInstance current_user_instance;
+    public static UserInstance admin_search_for_user_instance;
+    public static UserInstance target_user_instance;
 
     public CommandLineFunctions cmd_functions;
 
@@ -57,7 +57,7 @@ public class MainWindow extends JFrame {
     }
 
     public void setCurrentUserInstance(UserInstance user_instance) {
-        this.current_user_instance = user_instance;
+        MainWindow.current_user_instance = user_instance;
     }
 
     public UserInstance getCurrentUserInstance() {
@@ -65,7 +65,7 @@ public class MainWindow extends JFrame {
     }
 
     public void setAdminSearchForUserInstance(UserInstance user_instance) {
-        this.admin_search_for_user_instance = user_instance;
+        MainWindow.admin_search_for_user_instance = user_instance;
     }
 
     public UserInstance getAdminSearchForUserInstance() {
@@ -73,7 +73,7 @@ public class MainWindow extends JFrame {
     }
 
     public void setTargetUserInstance(UserInstance user_instance) {
-        this.target_user_instance = user_instance;
+        MainWindow.target_user_instance = user_instance;
     }
 
     public UserInstance getTargetUserInstance() {
@@ -81,7 +81,7 @@ public class MainWindow extends JFrame {
     }
 
     private void clear_pages() {
-        pages.clear();
+        pages.clear(this);
     }
 
     public void gotoWelcomePage() {
@@ -101,7 +101,7 @@ public class MainWindow extends JFrame {
 
     public void gotoBankingInterface() {
         setContent(pages.BANKING_INTERFACE);
-        setTitle("Banking Interface");
+        System.out.println("Banking Interface");
     }
 
     public void gotoDeposit() {

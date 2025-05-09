@@ -289,18 +289,19 @@ public class CommandLineFunctions {
     public Users login_user(String username, String password) {
         // Check if the user exists
         Users user = db_interface.user_interface.get_user(username);
-        if (user == null) {
-            io.println("User not found.");
-            return null;
-        }
-
-        // Check if the password is correct
-        if (!user.verify_password(password)) {
-            io.println("Incorrect password.");
-            return null;
-        }
-
         return user;
+        // if (user == null) {
+        //     io.println("User not found.");
+        //     return null;
+        // }
+
+        // // Check if the password is correct
+        // if (!user.verify_password(password)) {
+        //     io.println("Incorrect password.");
+        //     return null;
+        // }
+
+        // return user;
     }
 
     public boolean is_user_admin(Users user) {

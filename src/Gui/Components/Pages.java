@@ -43,8 +43,25 @@ public class Pages {
     }
 
 
-    public void clear() {
-        MainWindow main_window = WELCOME.getMainWindow();
+    public void delete_pages() {
+        WELCOME = null;
+        LOGIN = null;
+        REGISTER = null;
+        BANKING_INTERFACE = null;
+        DEPOSIT = null;
+        WITHDRAW = null;
+        TRANSFER = null;
+        ADMIN_DASHBOARD = null;
+        MANAGE_USER_PAGE = null;
+        ADMIN_DEPOSIT = null;
+        ADMIN_WITHDRAW = null;
+        ADMIN_TRANSFER = null;
+    }
+
+
+    public void clear(MainWindow main_window) {
+        delete_pages();
+        // Reinitialize pages
         init_pages(main_window);
     }
 }

@@ -11,11 +11,8 @@ public class BankingInterface extends ComponentBase {
         setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        // Example placeholders for username, balance, and currency
-        String username = "User";
-        double balance = 1000.00;
-        String currency = "USD";
-        AccountBalance accountBalance = new AccountBalance(window, username, balance, currency);
+
+        AccountBalance accountBalance = new AccountBalance(window);
         AccountTransaction accountTransaction = new AccountTransaction(window);
         
         JButton logoutButton = new JButton("Logout");

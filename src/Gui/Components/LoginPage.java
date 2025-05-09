@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import src.Gui.ComponentBase;
 import src.Gui.MainWindow;
-import src.Structs.Accounts;
 import src.Structs.UserInstance;
 import src.Structs.Users;
 
@@ -113,6 +112,7 @@ public class LoginPage extends ComponentBase {
                 main_window.gotoAdminDashboard();
             } else {
                 // Otherwise, go to the user page
+                System.out.println("User instance: " + user_instance);
                 main_window.gotoBankingInterface();
             }
 
