@@ -43,6 +43,11 @@ public class MainWindow extends JFrame {
         return super.getTitle();
     }
 
+    public void gotoWelcomePage() {
+        setContent(pages.WELCOME);
+        setTitle("Welcome");
+    }
+
     public void gotoLogin() {
         setContent(pages.LOGIN);
         setTitle("Login");
@@ -83,9 +88,24 @@ public class MainWindow extends JFrame {
         setTitle("Manage User Page");
     }
 
+    public void gotoAdminDeposit() {
+        setContent(pages.ADMIN_DEPOSIT);
+        setTitle("Admin Deposit");
+    }
+
+    public void gotoAdminWithdraw() {
+        setContent(pages.ADMIN_WITHDRAW);
+        setTitle("Admin Withdraw");
+    }
+
+    public void gotoAdminTransfer() {
+        setContent(pages.ADMIN_TRANSFER);
+        setTitle("Admin Transfer");
+    }
+
     public static void main(String[] args) {
         MainWindow window = new MainWindow("Main Window");
         window.setVisible(true);
-        window.gotoManageUserPage();
+        window.gotoWelcomePage();
     }
 }

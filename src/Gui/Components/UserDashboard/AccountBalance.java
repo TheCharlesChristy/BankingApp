@@ -64,15 +64,15 @@ public class AccountBalance extends ComponentBase {
     }
 
     private void on_deposit() {
-        System.out.println("Deposit button pressed");
+        main_window.gotoDeposit();
     }
 
     private void on_withdraw() {
-        System.out.println("Withdraw button pressed");
+        main_window.gotoWithdraw();
     }
 
     private void on_transfer() {
-        System.out.println("Transfer button pressed");
+        main_window.gotoTransfer();
     }
 
     private JButton createActionButton(String text) {

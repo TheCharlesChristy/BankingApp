@@ -73,7 +73,7 @@ public class TransferPage extends ComponentBase {
         add(formPanel, BorderLayout.CENTER);
     }
 
-    private void go_back() {
+    protected void go_back() {
         if (main_window != null) {
             main_window.gotoBankingInterface();
         }

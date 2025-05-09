@@ -31,8 +31,8 @@ public class ManageUserPage extends ComponentBase {
         // Logout button at the top right
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setOpaque(false);
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener(e -> onLogout());
+        JButton logoutButton = new JButton("Go Back");
+        logoutButton.addActionListener(e -> go_back());
         JPanel logoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         logoutPanel.setOpaque(false);
         logoutPanel.add(logoutButton);
@@ -133,15 +133,15 @@ public class ManageUserPage extends ComponentBase {
     }
 
     private void onDeposit() {
-        System.out.println("Deposit button pressed");
+        main_window.gotoAdminDeposit();
     }
 
     private void onWithdraw() {
-        System.out.println("Withdraw button pressed");
+        main_window.gotoAdminWithdraw();
     }
 
     private void transfer() {
-        System.out.println("Transfer button pressed");
+        main_window.gotoAdminTransfer();
     }
 
     private void onCurrencyChanged() {
@@ -161,8 +161,7 @@ public class ManageUserPage extends ComponentBase {
         transactionTableModel.addRow(new Object[]{"-50.00", "Transfer", "2025-05-03"});
     }
 
-    private void onLogout() {
-        System.out.println("Logout button pressed");
-        // Example: main_window.gotoLogin();
+    private void go_back() {
+        main_window.gotoAdminDashboard();
     }
 }

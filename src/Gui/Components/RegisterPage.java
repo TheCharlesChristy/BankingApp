@@ -30,7 +30,7 @@ public class RegisterPage extends ComponentBase {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                backToLogin();
+                go_back();
             }
         });
 
@@ -97,9 +97,9 @@ public class RegisterPage extends ComponentBase {
         add(formPanel, BorderLayout.CENTER);
     }
 
-    public void backToLogin() {
+    public void go_back() {
         if (main_window != null) {
-            main_window.gotoLogin();
+            main_window.gotoWelcomePage();
         }else {
             // Exit the application if main_window is null
             System.exit(0);
